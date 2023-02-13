@@ -1,4 +1,4 @@
-import MainPage from '../main-page/main-page';
+import MainPage from '../../pages/main-page/main-page';
 
 type TAppProps = {
   placesCount: number;

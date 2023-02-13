@@ -1,6 +1,6 @@
 import { TPlaceCard } from '../../types';
-import Header from '../header/header';
-import PlaceCard from '../place-card/place-card';
+import Header from '../../components/header/header';
+import PlaceCard from '../../components/place-card/place-card';
 
 type TMainPageProps = {
   placesCount: number;
