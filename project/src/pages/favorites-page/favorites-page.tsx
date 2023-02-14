@@ -1,5 +1,5 @@
+import {Helmet} from 'react-helmet-async';
 import { TPlaceCard, TPlaceCardByCity } from '../../types';
-
 import Header from '../../components/header/header';
 import PlaceCard from '../../components/place-card/place-card';
 
@@ -12,7 +12,7 @@ const favoritesPlaceCards: TPlaceCard[] = [
     rating: 80,
     title: 'Beautiful & luxurious apartment at great location',
     type: 'Apartment',
-    inBookmarks: true,
+    inFavorites: true,
     city: 'Amsterdam',
   },
   {
@@ -23,7 +23,7 @@ const favoritesPlaceCards: TPlaceCard[] = [
     rating: 50,
     title: 'Wood and stone place',
     type: 'Private room',
-    inBookmarks: true,
+    inFavorites: true,
     city: 'Amsterdam',
   },
   {
@@ -34,7 +34,7 @@ const favoritesPlaceCards: TPlaceCard[] = [
     rating: 80,
     title: 'Canal View Prinsengracht',
     type: 'Apartment',
-    inBookmarks: true,
+    inFavorites: true,
     city: 'Amsterdam',
   },
   {
@@ -45,7 +45,7 @@ const favoritesPlaceCards: TPlaceCard[] = [
     rating: 100,
     title: 'Nice, cozy, warm big bed apartment',
     type: 'Apartment',
-    inBookmarks: true,
+    inFavorites: true,
     city: 'Cologne',
   },
   {
@@ -56,7 +56,7 @@ const favoritesPlaceCards: TPlaceCard[] = [
     rating: 80,
     title: 'Wood and stone place',
     type: 'Private room',
-    inBookmarks: true,
+    inFavorites: true,
     city: 'Amsterdam',
   },
 ];
@@ -75,12 +75,15 @@ favoritesPlaceCards.forEach((favoritesPlaceCard) => {
 
 function FavoritesPage(): JSX.Element {
   return (
-    <div className={favoritesPlaceCards.length > 0 ? 'page' : 'page page--favorites-empty'}>
+    <div className={`page ${favoritesPlaceCards.length > 0 ? '' : 'page--favorites-empty'}`}>
+      <Helmet>
+        <title>Избранные комнаты - 6 городов</title>
+      </Helmet>
       <Header />
 
-      <main className={favoritesPlaceCards.length > 0 ? 'page__main page__main--favorites' : 'page__main page__main--favorites page__main--favorites-empty'}>
+      <main className={`page__main page__main--favorites ${favoritesPlaceCards.length > 0 ? '' : 'page__main--favorites-empty'}`}>
         <div className="page__favorites-container container">
-          <section className={favoritesPlaceCards.length > 0 ? 'favorites' : 'favorites favorites--empty'}>
+          <section className={`favorites ${favoritesPlaceCards.length > 0 ? '' : 'favorites--empty'}`}>
             {favoritesPlaceCards.length > 0 &&
               <>
                 <h1 className="favorites__title">Saved listing</h1>

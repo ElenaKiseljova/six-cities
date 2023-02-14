@@ -1,4 +1,4 @@
-type TPlaceCard = {
+export type TPlaceCard = {
   id: string;
   isPremium: boolean;
   image: string;
@@ -6,12 +6,12 @@ type TPlaceCard = {
   rating: number;
   title: string;
   type: 'Private room' | 'Apartment';
-  inBookmarks: boolean;
+  inFavorites: boolean;
   city: string;
 };
 
-type TPlaceCardByCity = {
+export type TPlaceCardByCity = {
   [city: string]: TPlaceCard[];
 };
 
-export { TPlaceCard, TPlaceCardByCity };
+export type TCity = string;

@@ -1,3 +1,4 @@
+import {Helmet} from 'react-helmet-async';
 import { TPlaceCard } from '../../types';
 import Header from '../../components/header/header';
 import PlaceCard from '../../components/place-card/place-card';
@@ -11,7 +12,7 @@ const nearPlacesPlaceCards: TPlaceCard[] = [
     rating: 80,
     title: 'Beautiful & luxurious apartment at great location',
     type: 'Apartment',
-    inBookmarks: false,
+    inFavorites: false,
     city: 'Amsterdam',
   },
   {
@@ -22,7 +23,7 @@ const nearPlacesPlaceCards: TPlaceCard[] = [
     rating: 50,
     title: 'Wood and stone place',
     type: 'Private room',
-    inBookmarks: true,
+    inFavorites: true,
     city: 'Amsterdam',
   },
   {
@@ -33,7 +34,7 @@ const nearPlacesPlaceCards: TPlaceCard[] = [
     rating: 80,
     title: 'Canal View Prinsengracht',
     type: 'Apartment',
-    inBookmarks: false,
+    inFavorites: false,
     city: 'Amsterdam',
   },
 ];
@@ -44,9 +45,13 @@ type TPropertyPageProps = {
 
 function PropertyPage(props: TPropertyPageProps): JSX.Element {
   const {isLoggedIn} = props;
+  const nameOfProperty = 'Детальное описание комнаты';
 
   return (
     <div className="page">
+      <Helmet>
+        <title>{nameOfProperty} - 6 городов</title>
+      </Helmet>
       <Header />
 
       <main className="page__main page__main--property">

@@ -1,4 +1,6 @@
-import { TPlaceCard } from '../../types';
+import {Helmet} from 'react-helmet-async';
+import {useState} from 'react';
+import {citiesPlaceCards, sixCities} from '../../mocks';
 import Header from '../../components/header/header';
 import PlaceCard from '../../components/place-card/place-card';
 
@@ -6,112 +8,40 @@ type TMainPageProps = {
   placesCount: number;
 }
 
-const citiesPlaceCards: TPlaceCard[] = [
-  {
-    id: '1',
-    isPremium: true,
-    image: 'img/apartment-01.jpg',
-    price: 120,
-    rating: 80,
-    title: 'Beautiful & luxurious apartment at great location',
-    type: 'Apartment',
-    inBookmarks: false,
-    city: 'Amsterdam',
-  },
-  {
-    id: '2',
-    isPremium: false,
-    image: 'img/room.jpg',
-    price: 80,
-    rating: 50,
-    title: 'Wood and stone place',
-    type: 'Private room',
-    inBookmarks: true,
-    city: 'Amsterdam',
-  },
-  {
-    id: '3',
-    isPremium: false,
-    image: 'img/apartment-03.jpg',
-    price: 132,
-    rating: 80,
-    title: 'Canal View Prinsengracht',
-    type: 'Apartment',
-    inBookmarks: false,
-    city: 'Amsterdam',
-  },
-  {
-    id: '4',
-    isPremium: true,
-    image: 'img/apartment-02.jpg',
-    price: 180,
-    rating: 100,
-    title: 'Nice, cozy, warm big bed apartment',
-    type: 'Apartment',
-    inBookmarks: false,
-    city: 'Amsterdam',
-  },
-  {
-    id: '5',
-    isPremium: false,
-    image: 'img/room.jpg',
-    price: 80,
-    rating: 80,
-    title: 'Wood and stone place',
-    type: 'Private room',
-    inBookmarks: true,
-    city: 'Amsterdam',
-  },
-];
-
 
 function MainPage(props: TMainPageProps): JSX.Element {
   const { placesCount } = props;
 
+  const [curCity, setCurCity] = useState('Brussels');
+
   return (
     <div className="page page--gray page--main">
+      <Helmet>
+        <title>Главная - 6 городов</title>
+      </Helmet>
       <Header />
 
-      <main className={placesCount > 0 ? 'page__main page__main--index' : 'page__main page__main--index page__main--index-empty'}>
+      <main className={`page__main page__main--index ${placesCount > 0 ? '' : 'page__main--index-empty'}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#top">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#top">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#top">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active" href="#top">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#top">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#top">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              {sixCities.map((city) => (
+                <li key={city} className="locations__item">
+                  <a
+                    className={`locations__item-link tabs__item ${city === curCity ? 'tabs__item--active' : ''}`}
+                    href="#top"
+                    onClick={(): void => setCurCity(city)}
+                  >
+                    <span>{city}</span>
+                  </a>
+                </li>
+              ))}
             </ul>
           </section>
         </div>
         <div className="cities">
-          <div className={placesCount > 0 ? 'cities__places-container container' : 'cities__places-container cities__places-container--empty container'}>
+          <div className={`cities__places-container container ${placesCount > 0 ? '' : 'cities__places-container--empty'}`}>
             { placesCount > 0 &&
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
@@ -157,3 +87,4 @@ function MainPage(props: TMainPageProps): JSX.Element {
 }
 
 export default MainPage;
+

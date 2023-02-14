@@ -9,30 +9,30 @@ type TPlaceCardProps = {
 
 function PlaceCard(props: TPlaceCardProps): JSX.Element {
   const {data, sectionName} = props;
-  const {id, isPremium, image, price, title, rating, inBookmarks, type} = data;
+  const {id, isPremium, image, price, title, rating, inFavorites, type} = data;
 
   return (
-    <article className={sectionName ? `${sectionName}__place-card place-card` : 'place-card'}>
+    <article className={`place-card ${sectionName ? `${sectionName}__place-card` : ''}`}>
       {isPremium &&
         <div className="place-card__mark">
           <span>Premium</span>
         </div>}
-      <div className={sectionName ? `${sectionName}__image-wrapper place-card__image-wrapper` : 'place-card__image-wrapper'}>
+      <div className={`place-card__image-wrapper ${sectionName ? `${sectionName}__image-wrapper}` : ''}`}>
         <Link to={`${AppRoute.Property}/${id}`}>
           <img className="place-card__image" src={image} width="260" height="200" alt="apartment" />
         </Link>
       </div>
-      <div className={sectionName ? `${sectionName}__place-card-info place-card__info` : 'place-card__info'}>
+      <div className={`place-card__info ${sectionName ? `${sectionName}__place-card-info` : ''}`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={inBookmarks ? 'place-card__bookmark-button place-card__bookmark-button--active button' : 'place-card__bookmark-button button'} type="button">
+          <button className={`place-card__bookmark-button button ${inFavorites ? 'place-card__bookmark-button--active' : ''}`} type="button">
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
-            <span className="visually-hidden">{ inBookmarks ? 'In bookmarks' : 'To bookmarks'}</span>
+            <span className="visually-hidden">{ inFavorites ? 'In bookmarks' : 'To bookmarks'}</span>
           </button>
         </div>
         <div className="place-card__rating rating">
