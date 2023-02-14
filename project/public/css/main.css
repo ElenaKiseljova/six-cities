@@ -1602,6 +1602,15 @@ img {
   margin-left: 8px;
   margin-bottom: 24px;
 }
+
+.near-places__image-wrapper {
+  max-width: 260px;
+  max-height: 220px;
+}
+.near-places__image-wrapper img {
+  object-fit: cover;
+  object-position: center;
+}
 .login {
   position: relative;
   width: 520px;
@@ -1703,9 +1712,15 @@ img {
   margin-bottom: 0;
 }
 .favorites__image-wrapper {
-  min-width: 150px;
+  max-width: 150px;
+  max-height: 110px;
   margin-right: 16px;
   margin-bottom: 0;
+}
+
+.favorites__image-wrapper img {
+  object-fit: cover;
+  object-position: center;
 }
 .favorites__place-card-info {
   padding-top: 1px;

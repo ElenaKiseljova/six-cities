@@ -8,7 +8,6 @@ type TMainPageProps = {
   placesCount: number;
 }
 
-
 function MainPage(props: TMainPageProps): JSX.Element {
   const { placesCount } = props;
 

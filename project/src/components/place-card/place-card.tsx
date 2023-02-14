@@ -17,7 +17,7 @@ function PlaceCard(props: TPlaceCardProps): JSX.Element {
         <div className="place-card__mark">
           <span>Premium</span>
         </div>}
-      <div className={`place-card__image-wrapper ${sectionName ? `${sectionName}__image-wrapper}` : ''}`}>
+      <div className={`place-card__image-wrapper ${sectionName ? `${sectionName}__image-wrapper` : ''}`}>
         <Link to={`${AppRoute.Property}/${id}`}>
           <img className="place-card__image" src={image} width="260" height="200" alt="apartment" />
         </Link>
