@@ -1,4 +1,6 @@
-export const cities: string[] = [
+import { TCity } from '../types/city';
+
+export const cities: TCity[] = [
   'Amsterdam',
   'Paris',
   'Cologne',

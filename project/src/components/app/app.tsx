@@ -34,15 +34,26 @@ function App(props: TAppProps): JSX.Element {
       <HelmetProvider>
         <BrowserRouter>
           <Routes>
-            <Route
-              path={AppRoute.Root}
-              element={
-                <MainPage
-                  cities={cities}
-                  offers={offers}
-                />
-              }
-            />
+            <Route path={AppRoute.Root}>
+              <Route
+                path={`${AppRoute.Root}:city`}
+                element={
+                  <MainPage
+                    cities={cities}
+                    offers={offers}
+                  />
+                }
+              />
+              <Route
+                path={''}
+                element={
+                  <MainPage
+                    cities={cities}
+                    offers={offers}
+                  />
+                }
+              />
+            </Route>
             <Route
               path={`${AppRoute.Property}/:id`}
               element={

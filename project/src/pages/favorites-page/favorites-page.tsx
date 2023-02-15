@@ -55,7 +55,11 @@ function FavoritesPage(props: TFavoritesPageProps): JSX.Element {
                         <div className="favorites__places">
                           {
                             Object.values(favoritesPlaceCardsByCity)[index].map((card) => (
-                              <PlaceCard key={card.id} sectionName='favorites' data={card} />
+                              <PlaceCard
+                                key={card.id}
+                                sectionName='favorites'
+                                data={card}
+                              />
                             ))
                           }
                         </div>

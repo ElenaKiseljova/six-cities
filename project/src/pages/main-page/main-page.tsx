@@ -1,5 +1,7 @@
 import {Helmet} from 'react-helmet-async';
-import {useState} from 'react';
+import { Link, useParams } from 'react-router-dom';
+
+import {AppRoute} from '../../const';
 
 import { TPlaceCard } from '../../types/offers';
 
@@ -14,15 +16,15 @@ type TMainPageProps = {
 function MainPage(props: TMainPageProps): JSX.Element {
   const { cities, offers } = props;
 
-  const [curCity, setCurCity] = useState('Brussels');
+  const {city} = useParams();
 
-  const curCityOffers = offers.filter((offer) => offer.city === curCity);
-  const placesCount = curCityOffers.length;
+  const filteredOffers = city ? offers.filter((offer) => offer.city === city) : offers;
+  const placesCount = filteredOffers.length;
 
   return (
     <div className="page page--gray page--main">
       <Helmet>
-        <title>Главная - 6 городов</title>
+        <title>{city ? city : 'Главная'} - 6 городов</title>
       </Helmet>
       <Header />
 
@@ -31,15 +33,14 @@ function MainPage(props: TMainPageProps): JSX.Element {
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              {cities.map((city) => (
-                <li key={city} className="locations__item">
-                  <a
-                    className={`locations__item-link tabs__item ${city === curCity ? 'tabs__item--active' : ''}`}
-                    href="#top"
-                    onClick={(): void => setCurCity(city)}
+              {cities.map((c) => (
+                <li key={c} className="locations__item">
+                  <Link
+                    className={`locations__item-link tabs__item ${c === city ? 'tabs__item--active' : ''}`}
+                    to={`${AppRoute.Root}${c}`}
                   >
-                    <span>{city}</span>
-                  </a>
+                    <span>{c}</span>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -50,7 +51,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
             { placesCount > 0 &&
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{placesCount} places to stay in {curCity}</b>
+                <b className="places__found">{placesCount} places to stay in {city}</b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by</span>
                   <span className="places__sorting-type" tabIndex={0}>
@@ -67,14 +68,14 @@ function MainPage(props: TMainPageProps): JSX.Element {
                   </ul>
                 </form>
 
-                <PlaceCardList sectionName='cities' additionalClasses={'tabs__content'} cards={curCityOffers} />
+                <PlaceCardList sectionName='cities' additionalClasses={'tabs__content'} cards={filteredOffers} />
               </section>}
 
             { placesCount === 0 &&
               <section className="cities__no-places">
                 <div className="cities__status-wrapper tabs__content">
                   <b className="cities__status">No places to stay available</b>
-                  <p className="cities__status-description">We could not find any property available at the moment in {curCity}</p>
+                  <p className="cities__status-description">We could not find any property available at the moment in {city}</p>
                 </div>
               </section>}
 

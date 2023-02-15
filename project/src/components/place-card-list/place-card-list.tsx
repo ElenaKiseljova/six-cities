@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { TPlaceCard } from '../../types/offers';
 
 import PlaceCard from '../place-card/place-card';
@@ -10,6 +12,8 @@ type TPlaceCardListProps = {
 
 function PlaceCardList(props: TPlaceCardListProps): JSX.Element {
   const {sectionName, additionalClasses, cards} = props;
+
+  const [activeCard, setActiveCard] = useState(cards.length ? cards[0] : null);
 
   let addClasses = '';
   if (additionalClasses) {
@@ -27,7 +31,22 @@ function PlaceCardList(props: TPlaceCardListProps): JSX.Element {
       }
     >
       {
-        cards.map((offer) => <PlaceCard key={offer.id} sectionName={sectionName} data={offer} />)
+        cards.map((offer) => (
+          <PlaceCard
+            key={offer.id}
+            sectionName={sectionName}
+            data={offer}
+            onMouseEnter={(hoveredCard) => {
+              setActiveCard(hoveredCard);
+
+              // console.log('activeCard', hoveredCard, activeCard);
+            }}
+            onMouseLeave={() => {
+              setActiveCard(null);
+
+              console.log('activeCard', activeCard);
+            }}
+          />))
       }
     </div>
   );
