@@ -4,7 +4,7 @@ import { ICurUser } from '../../types/user';
 import { TPlaceCardByCity } from '../../types/offers';
 
 import Header from '../../components/header/header';
-import PlaceCardList from '../../components/place-card-list/place-card-list';
+import PlaceCard from '../../components/place-card/place-card';
 
 type TFavoritesPageProps = {
   user: ICurUser;
@@ -52,8 +52,13 @@ function FavoritesPage(props: TFavoritesPageProps): JSX.Element {
                             </a>
                           </div>
                         </div>
-
-                        <PlaceCardList sectionName='favorites' cards={Object.values(favoritesPlaceCardsByCity)[index]} />
+                        <div className="favorites__places">
+                          {
+                            Object.values(favoritesPlaceCardsByCity)[index].map((card) => (
+                              <PlaceCard key={card.id} sectionName='favorites' data={card} />
+                            ))
+                          }
+                        </div>
                       </li>
                     ))
                   }
