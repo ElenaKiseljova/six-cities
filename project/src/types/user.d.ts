@@ -9,7 +9,7 @@ export interface IReviewUser extends IUser {
   img: string;
 }
 
-export interface ICurUser extends IUser {
+export interface ICurUser extends IUser, IReviewUser {
   email: string;
   favorites?: TPlaceCard[];
 }

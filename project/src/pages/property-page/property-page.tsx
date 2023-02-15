@@ -1,7 +1,7 @@
 import {Helmet} from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
-import { TReviews } from '../../types/reviews';
+import { TReview, TReviews } from '../../types/reviews';
 import { TPlaceCard } from '../../types/offers';
 
 import Header from '../../components/header/header';
@@ -13,10 +13,11 @@ type TPropertyPageProps = {
   reviews: TReviews;
   offers: TPlaceCard[];
   isLoggedIn: boolean;
+  onSendReview: (review: TReview) => void;
 }
 
 function PropertyPage(props: TPropertyPageProps): JSX.Element {
-  const {reviews, offers, isLoggedIn} = props;
+  const {reviews, offers, isLoggedIn, onSendReview} = props;
 
   const {id} = useParams();
 
@@ -162,7 +163,10 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
                         </li>
                       ))}
                     </ul>
-                    {isLoggedIn && <ReviewForm />}
+                    {isLoggedIn &&
+                      <ReviewForm
+                        onSendReview={onSendReview}
+                      />}
                   </section>
                 </div>
               </div>

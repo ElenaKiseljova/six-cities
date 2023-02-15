@@ -7,19 +7,19 @@ import { TPlaceCard } from '../../types/offers';
 type TPlaceCardProps = {
   data: TPlaceCard;
   sectionName?: string;
-  onMouseEnter?: (card: TPlaceCard) => void;
-  onMouseLeave?: () => void;
+  onHoverIn?: (card: TPlaceCard) => void;
+  onHoverOut?: () => void;
 }
 
 function PlaceCard(props: TPlaceCardProps): JSX.Element {
-  const {data, sectionName, onMouseEnter, onMouseLeave} = props;
+  const {data, sectionName, onHoverIn, onHoverOut} = props;
   const {id, isPremium, cardImg, price, title, rating, inFavorites, type} = data;
 
   return (
     <article
       className={`place-card ${sectionName ? `${sectionName}__place-card` : ''}`}
-      onMouseEnter={() => typeof onMouseEnter === 'function' ? onMouseEnter(data) : false}
-      onMouseLeave={() => typeof onMouseLeave === 'function' ? onMouseLeave() : false}
+      onMouseEnter={() => typeof onHoverIn === 'function' ? onHoverIn(data) : false}
+      onMouseLeave={() => typeof onHoverOut === 'function' ? onHoverOut() : false}
     >
       {isPremium &&
         <div className="place-card__mark">

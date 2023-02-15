@@ -61,6 +61,9 @@ function App(props: TAppProps): JSX.Element {
                   offers={offers}
                   reviews={reviews}
                   isLoggedIn
+                  onSendReview={() => {
+                    throw new Error('Function \'onSendReview\' isn\'t implemented.');
+                  }}
                 />
               }
             />
