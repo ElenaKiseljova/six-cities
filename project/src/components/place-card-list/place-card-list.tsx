@@ -38,12 +38,11 @@ function PlaceCardList(props: TPlaceCardListProps): JSX.Element {
             data={offer}
             onMouseEnter={(hoveredCard) => {
               setActiveCard(hoveredCard);
-
-              // console.log('activeCard', hoveredCard, activeCard);
             }}
             onMouseLeave={() => {
               setActiveCard(null);
 
+              // eslint-disable-next-line no-console
               console.log('activeCard', activeCard);
             }}
           />))
