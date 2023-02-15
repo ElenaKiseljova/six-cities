@@ -1,6 +1,8 @@
 import {Link} from 'react-router-dom';
+
 import {AppRoute} from '../../const';
-import { TPlaceCard } from '../../types';
+
+import { TPlaceCard } from '../../types/offers';
 
 type TPlaceCardProps = {
   data: TPlaceCard;
@@ -9,7 +11,7 @@ type TPlaceCardProps = {
 
 function PlaceCard(props: TPlaceCardProps): JSX.Element {
   const {data, sectionName} = props;
-  const {id, isPremium, image, price, title, rating, inFavorites, type} = data;
+  const {id, isPremium, cardImg, price, title, rating, inFavorites, type} = data;
 
   return (
     <article className={`place-card ${sectionName ? `${sectionName}__place-card` : ''}`}>
@@ -19,7 +21,7 @@ function PlaceCard(props: TPlaceCardProps): JSX.Element {
         </div>}
       <div className={`place-card__image-wrapper ${sectionName ? `${sectionName}__image-wrapper` : ''}`}>
         <Link to={`${AppRoute.Property}/${id}`}>
-          <img className="place-card__image" src={image} width="260" height="200" alt="apartment" />
+          <img className="place-card__image" src={cardImg} width="260" height="200" alt="apartment" />
         </Link>
       </div>
       <div className={`place-card__info ${sectionName ? `${sectionName}__place-card-info` : ''}`}>

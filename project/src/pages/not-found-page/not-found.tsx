@@ -1,8 +1,8 @@
 import {Helmet} from 'react-helmet-async';
+
 import Header from '../../components/header/header';
 
 function NotFoundPage(): JSX.Element {
-
   return (
     <div className="page">
       <Helmet>

@@ -1,7 +1,14 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
+
+import { TPlaceCard } from '../../types/offers';
+import { TReviews } from '../../types/reviews';
+import { ICurUser } from '../../types/user';
+
 import {AppRoute, AuthorizationStatus} from '../../const';
+
 import PrivateRoute from '../private-route/private-route';
+
 import MainPage from '../../pages/main-page/main-page';
 import FvoritesPage from '../../pages/favorites-page/favorites-page';
 import LoginPage from '../../pages/login-page/login-page';
@@ -9,11 +16,14 @@ import PropertyPage from '../../pages/property-page/property-page';
 import NotFoundPage from '../../pages/not-found-page/not-found';
 
 type TAppProps = {
-  placesCount: number;
+  user: ICurUser;
+  cities: string[];
+  offers: TPlaceCard[];
+  reviews: TReviews;
 }
 
 function App(props: TAppProps): JSX.Element {
-  const {placesCount} = props;
+  const {user, cities, offers, reviews} = props;
 
   return (
     <>
@@ -24,10 +34,24 @@ function App(props: TAppProps): JSX.Element {
       <HelmetProvider>
         <BrowserRouter>
           <Routes>
-            <Route path={AppRoute.Root} element={<MainPage placesCount={placesCount} />} />
+            <Route
+              path={AppRoute.Root}
+              element={
+                <MainPage
+                  cities={cities}
+                  offers={offers}
+                />
+              }
+            />
             <Route
               path={`${AppRoute.Property}/:id`}
-              element={<PropertyPage isLoggedIn />}
+              element={
+                <PropertyPage
+                  offers={offers}
+                  reviews={reviews}
+                  isLoggedIn
+                />
+              }
             />
             <Route
               path={AppRoute.Login}
@@ -39,7 +63,9 @@ function App(props: TAppProps): JSX.Element {
                 <PrivateRoute
                   authorizationStatus={AuthorizationStatus.Auth}
                 >
-                  <FvoritesPage />
+                  <FvoritesPage
+                    user={user}
+                  />
                 </PrivateRoute>
               }
             />

@@ -1,5 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+
+import {user} from './mocks/user';
+import {cities} from './mocks/cities';
+import {offers} from './mocks/offers';
+import {reviews} from './mocks/reviews';
+
 import App from './components/app/app';
 
 const root = ReactDOM.createRoot(
@@ -8,6 +14,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App placesCount={133} />
+    <App user={user} cities={cities} offers={offers} reviews={reviews} />
   </React.StrictMode>,
 );

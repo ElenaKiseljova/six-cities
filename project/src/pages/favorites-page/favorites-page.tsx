@@ -1,21 +1,33 @@
 import {Helmet} from 'react-helmet-async';
-import { TPlaceCardByCity } from '../../types';
-import { favoritesPlaceCards } from '../../mocks';
+
+import { ICurUser } from '../../types/user';
+import { TPlaceCardByCity } from '../../types/offers';
+
 import Header from '../../components/header/header';
 import PlaceCard from '../../components/place-card/place-card';
 
-const favoritesPlaceCardsByCity: TPlaceCardByCity = {};
-favoritesPlaceCards.forEach((favoritesPlaceCard) => {
-  if (typeof favoritesPlaceCard.city === 'string') {
-    if (Array.isArray(favoritesPlaceCardsByCity[favoritesPlaceCard.city])) {
-      favoritesPlaceCardsByCity[favoritesPlaceCard.city].push(favoritesPlaceCard);
-    } else {
-      favoritesPlaceCardsByCity[favoritesPlaceCard.city] = [favoritesPlaceCard];
-    }
-  }
-});
+type TFavoritesPageProps = {
+  user: ICurUser;
+}
 
-function FavoritesPage(): JSX.Element {
+function FavoritesPage(props: TFavoritesPageProps): JSX.Element {
+  const {user} = props;
+
+  const favoritesPlaceCards = user.favorites || [];
+  const favoritesPlaceCardsByCity: TPlaceCardByCity = {};
+
+  if (favoritesPlaceCards && Array.isArray(favoritesPlaceCards)) {
+    favoritesPlaceCards.forEach((favoritesPlaceCard) => {
+      if (typeof favoritesPlaceCard.city === 'string') {
+        if (Array.isArray(favoritesPlaceCardsByCity[favoritesPlaceCard.city])) {
+          favoritesPlaceCardsByCity[favoritesPlaceCard.city].push(favoritesPlaceCard);
+        } else {
+          favoritesPlaceCardsByCity[favoritesPlaceCard.city] = [favoritesPlaceCard];
+        }
+      }
+    });
+  }
+
   return (
     <div className={`page ${favoritesPlaceCards.length > 0 ? '' : 'page--favorites-empty'}`}>
       <Helmet>
