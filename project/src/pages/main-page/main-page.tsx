@@ -4,7 +4,7 @@ import {useState} from 'react';
 import { TPlaceCard } from '../../types/offers';
 
 import Header from '../../components/header/header';
-import PlaceCard from '../../components/place-card/place-card';
+import PlaceCardList from '../../components/place-card-list/place-card-list';
 
 type TMainPageProps = {
   cities: string[];
@@ -66,11 +66,8 @@ function MainPage(props: TMainPageProps): JSX.Element {
                     <li className="places__option" tabIndex={0}>Top rated first</li>
                   </ul>
                 </form>
-                <div className="cities__places-list places__list tabs__content">
-                  {
-                    curCityOffers.map((offer) => <PlaceCard key={offer.id} sectionName="cities" data={offer} />)
-                  }
-                </div>
+
+                <PlaceCardList sectionName='cities' additionalClasses={'tabs__content'} cards={curCityOffers} />
               </section>}
 
             { placesCount === 0 &&

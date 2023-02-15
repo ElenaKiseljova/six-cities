@@ -5,7 +5,7 @@ import { TReviews } from '../../types/reviews';
 import { TPlaceCard } from '../../types/offers';
 
 import Header from '../../components/header/header';
-import PlaceCard from '../../components/place-card/place-card';
+import PlaceCardList from '../../components/place-card-list/place-card-list';
 import ReviewForm from '../../components/review-form/review-form';
 
 
@@ -171,17 +171,8 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
             <div className="container">
               <section className="near-places places">
                 <h2 className="near-places__title">Other places in the neighbourhood</h2>
-                <div className="near-places__list places__list">
-                  {
-                    propertyNearbyOffers.map((propertyNearbyOffer) => (
-                      <PlaceCard
-                        key={propertyNearbyOffer.id}
-                        sectionName='near-places'
-                        data={propertyNearbyOffer}
-                      />
-                    ))
-                  }
-                </div>
+
+                <PlaceCardList sectionName='near-places' cards={propertyNearbyOffers} />
               </section>
             </div>
           </>}

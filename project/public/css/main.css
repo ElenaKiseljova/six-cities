@@ -1582,7 +1582,7 @@ img {
   text-align: center;
   color: #000;
 }
-.near-places__list {
+.near-places__places-list {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
