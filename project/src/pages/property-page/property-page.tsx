@@ -5,7 +5,7 @@ import { TReviews } from '../../types/reviews';
 import { TPlaceCard } from '../../types/offers';
 
 import Header from '../../components/header/header';
-// import PlaceCard from '../../components/place-card/place-card';
+import PlaceCard from '../../components/place-card/place-card';
 import ReviewForm from '../../components/review-form/review-form';
 
 
@@ -20,8 +20,18 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
 
   const {id} = useParams();
 
+  const NEARBY_IN_MAP = 0.01;
+
   const property = offers.find((offer) => offer.id === id);
   const propertyReviews = id && reviews[id] ? reviews[id] : [];
+  const propertyNearbyOffers = offers.filter((offer) => {
+    if (property) {
+      return Math.abs(offer.map[0] - property.map[0]) < NEARBY_IN_MAP ||
+        Math.abs(offer.map[1] - property.map[1]) < NEARBY_IN_MAP;
+    }
+
+    return false;
+  });
 
   return (
     <div className="page">
@@ -36,24 +46,13 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
             <section className="property">
               <div className="property__gallery-container container">
                 <div className="property__gallery">
-                  <div className="property__image-wrapper">
-                    <img className="property__image" src="img/room.jpg" alt="room" />
-                  </div>
-                  <div className="property__image-wrapper">
-                    <img className="property__image" src="img/apartment-01.jpg" alt="room" />
-                  </div>
-                  <div className="property__image-wrapper">
-                    <img className="property__image" src="img/apartment-02.jpg" alt="room" />
-                  </div>
-                  <div className="property__image-wrapper">
-                    <img className="property__image" src="img/apartment-03.jpg" alt="room" />
-                  </div>
-                  <div className="property__image-wrapper">
-                    <img className="property__image" src="img/studio-01.jpg" alt="room" />
-                  </div>
-                  <div className="property__image-wrapper">
-                    <img className="property__image" src="img/apartment-01.jpg" alt="room" />
-                  </div>
+                  {
+                    property.imgs.map((img, i) => (
+                      <div key={`${img}-${i + 1}`} className="property__image-wrapper">
+                        <img className="property__image" src={img} alt={property.title} />
+                      </div>
+                    ))
+                  }
                 </div>
               </div>
               <div className="property__container container">
@@ -86,10 +85,10 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
                       {property.type}
                     </li>
                     <li className="property__feature property__feature--bedrooms">
-                      3 Bedrooms
+                      {property.bedrooms} Bedrooms
                     </li>
                     <li className="property__feature property__feature--adults">
-                      Max 4 adults
+                      Max {property.adults} adults
                     </li>
                   </ul>
                   <div className="property__price">
@@ -99,58 +98,40 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
                   <div className="property__inside">
                     <h2 className="property__inside-title">What&apos;s inside</h2>
                     <ul className="property__inside-list">
-                      <li className="property__inside-item">
-                        Wi-Fi
-                      </li>
-                      <li className="property__inside-item">
-                        Washing machine
-                      </li>
-                      <li className="property__inside-item">
-                        Towels
-                      </li>
-                      <li className="property__inside-item">
-                        Heating
-                      </li>
-                      <li className="property__inside-item">
-                        Coffee machine
-                      </li>
-                      <li className="property__inside-item">
-                        Baby seat
-                      </li>
-                      <li className="property__inside-item">
-                        Kitchen
-                      </li>
-                      <li className="property__inside-item">
-                        Dishwasher
-                      </li>
-                      <li className="property__inside-item">
-                        Cabel TV
-                      </li>
-                      <li className="property__inside-item">
-                        Fridge
-                      </li>
+                      {
+                        property.features.map((feature) => (
+                          <li key={feature} className="property__inside-item">
+                            {feature}
+                          </li>
+                        ))
+                      }
                     </ul>
                   </div>
                   <div className="property__host">
                     <h2 className="property__host-title">Meet the host</h2>
                     <div className="property__host-user user">
-                      <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                        <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar" />
+                      <div className={`property__avatar-wrapper user__avatar-wrapper ${property.host.isPro ? 'property__avatar-wrapper--pro' : ''}`}>
+                        <img className="property__avatar user__avatar" src={property.host.img} width="74" height="74" alt={property.host.name} />
                       </div>
                       <span className="property__user-name">
-                        Angelina
+                        {property.host.name}
                       </span>
                       <span className="property__user-status">
-                        Pro
+                        {property.host.isPro ? 'Pro' : ''}
                       </span>
                     </div>
                     <div className="property__description">
-                      <p className="property__text">
-                        A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                      </p>
-                      <p className="property__text">
-                        An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
-                      </p>
+                      {typeof property.host.text === 'string' &&
+                        <p className="property__text">
+                          A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
+                        </p>}
+
+                      {Array.isArray(property.host.text) &&
+                        property.host.text.map((text, i) => (
+                          <p key={`${text}-${i + 1}`} className="property__text">
+                            {text}
+                          </p>
+                        ))}
                     </div>
                   </div>
                   <section className="property__reviews reviews">
@@ -188,14 +169,20 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
               <section className="property__map map"></section>
             </section>
             <div className="container">
-              {/* <section className="near-places places">
+              <section className="near-places places">
                 <h2 className="near-places__title">Other places in the neighbourhood</h2>
                 <div className="near-places__list places__list">
                   {
-                    nearPlacesPlaceCards.map((nearPlacesPlaceCard) => <PlaceCard key={nearPlacesPlaceCard.id} sectionName='near-places' data={nearPlacesPlaceCard} />)
+                    propertyNearbyOffers.map((propertyNearbyOffer) => (
+                      <PlaceCard
+                        key={propertyNearbyOffer.id}
+                        sectionName='near-places'
+                        data={propertyNearbyOffer}
+                      />
+                    ))
                   }
                 </div>
-              </section> */}
+              </section>
             </div>
           </>}
 

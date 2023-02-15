@@ -1,4 +1,5 @@
 import { TReview } from './reviews';
+import { THost } from './host';
 
 export type TPlaceCard = {
   id: string;
@@ -12,6 +13,11 @@ export type TPlaceCard = {
   inFavorites: boolean;
   city: string;
   reviews: TReview[];
+  bedrooms: number;
+  adults: number;
+  features: string[];
+  host: THost;
+  map: [number, number];
 };
 
 export type TPlaceCardByCity = {
