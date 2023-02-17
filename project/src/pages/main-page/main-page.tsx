@@ -1,31 +1,44 @@
 import {Helmet} from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
+import { useState } from 'react';
 
 import {AppRoute} from '../../const';
 
 import { TPlaceCard } from '../../types/offers';
 import { TCity } from '../../types/city';
+import { TPoint } from '../../types/points';
 
 import Header from '../../components/header/header';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
+import Map from '../../components/map/map';
 
 type TMainPageProps = {
   cities: TCity[];
   offers: TPlaceCard[];
+  points: TPoint[];
 }
 
 function MainPage(props: TMainPageProps): JSX.Element {
-  const { cities, offers } = props;
+  const { cities, offers, points } = props;
 
-  const {city} = useParams();
+  const {city: cityName} = useParams();
 
-  const filteredOffers = city ? offers.filter((offer) => offer.city.title === city) : offers;
-  const placesCount = filteredOffers.length;
+  const city = cities.find((c) => c.title === cityName);
+  const offersInCity = cityName ? offers.filter((offer) => offer.city.title === cityName) : offers;
+  const placesCount = offersInCity.length;
+
+  const [selectedPoint, setSelectedPoint] = useState<TPoint | undefined>(undefined);
+
+  const onPlaceCardHoverHandler = (placeName: string | undefined) => {
+    const curPoint = points.find((point) => placeName ? point.title === placeName : false);
+
+    setSelectedPoint(curPoint);
+  };
 
   return (
     <div className="page page--gray page--main">
       <Helmet>
-        <title>{city ? city : 'Главная'} - 6 городов</title>
+        <title>{cityName ? cityName : 'Главная'} - 6 городов</title>
       </Helmet>
       <Header />
 
@@ -37,7 +50,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
               {cities.map((c) => (
                 <li key={c.title} className="locations__item">
                   <Link
-                    className={`locations__item-link tabs__item ${c.title === city ? 'tabs__item--active' : ''}`}
+                    className={`locations__item-link tabs__item ${c.title === cityName ? 'tabs__item--active' : ''}`}
                     to={`${AppRoute.Root}${c.title}`}
                   >
                     <span>{c.title}</span>
@@ -52,7 +65,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
             { placesCount > 0 &&
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{placesCount} places to stay in {city}</b>
+                <b className="places__found">{placesCount} places to stay in {cityName}</b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by&nbsp;</span>
                   <span className="places__sorting-type" tabIndex={0}>
@@ -69,19 +82,29 @@ function MainPage(props: TMainPageProps): JSX.Element {
                   </ul>
                 </form>
 
-                <PlaceCardList sectionName='cities' additionalClasses={'tabs__content'} cards={filteredOffers} />
+                <PlaceCardList
+                  sectionName='cities'
+                  additionalClasses={'tabs__content'}
+                  offers={offersInCity}
+                  onPlaceCardHover={onPlaceCardHoverHandler}
+                />
               </section>}
 
             { placesCount === 0 &&
               <section className="cities__no-places">
                 <div className="cities__status-wrapper tabs__content">
                   <b className="cities__status">No places to stay available</b>
-                  <p className="cities__status-description">We could not find any property available at the moment in {city}</p>
+                  <p className="cities__status-description">We could not find any property available at the moment in {cityName}</p>
                 </div>
               </section>}
 
             <div className="cities__right-section">
-              {placesCount > 0 && <section className="cities__map map"></section>}
+              {placesCount > 0 &&
+                <Map
+                  city={city}
+                  points={points}
+                  selectedPoint={selectedPoint}
+                />}
             </div>
           </div>
         </div>

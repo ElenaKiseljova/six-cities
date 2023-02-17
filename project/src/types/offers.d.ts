@@ -1,9 +1,8 @@
 import { TReview } from './reviews';
 import { THost } from './host';
-import { TPoint } from './points';
 import { TCity } from './city';
 
-export type TPlaceCard = TPoint & {
+export type TPlaceCard = {
   id: string;
   isPremium: boolean;
   cardImg: string;

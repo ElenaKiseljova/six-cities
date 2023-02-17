@@ -5,6 +5,7 @@ import {user} from './mocks/user';
 import {cities} from './mocks/cities';
 import {offers} from './mocks/offers';
 import {reviews} from './mocks/reviews';
+import {points} from './mocks/points';
 
 import App from './components/app/app';
 
@@ -14,6 +15,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App user={user} cities={cities} offers={offers} reviews={reviews} />
+    <App user={user} cities={cities} offers={offers} points={points} reviews={reviews} />
   </React.StrictMode>,
 );

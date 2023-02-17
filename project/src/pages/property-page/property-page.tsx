@@ -3,13 +3,14 @@ import { useParams } from 'react-router-dom';
 
 import { TReview, TReviews } from '../../types/reviews';
 import { TPlaceCard } from '../../types/offers';
+import { ICurUser } from '../../types/user';
 
 import Header from '../../components/header/header';
-import PlaceCardList from '../../components/place-card-list/place-card-list';
+// import PlaceCardList from '../../components/place-card-list/place-card-list';
 import ReviewForm from '../../components/review-form/review-form';
 
-
 type TPropertyPageProps = {
+  user: ICurUser;
   reviews: TReviews;
   offers: TPlaceCard[];
   isLoggedIn: boolean;
@@ -17,22 +18,22 @@ type TPropertyPageProps = {
 }
 
 function PropertyPage(props: TPropertyPageProps): JSX.Element {
-  const {reviews, offers, isLoggedIn, onSendReview} = props;
+  const {user, reviews, offers, isLoggedIn, onSendReview} = props;
 
   const {id} = useParams();
 
-  const NEARBY_IN_MAP = 0.01;
+  // const NEARBY_IN_MAP = 0.01;
 
   const property = offers.find((offer) => offer.id === id);
   const propertyReviews = id && reviews[id] ? reviews[id] : [];
-  const propertyNearbyOffers = offers.filter((offer) => {
-    if (property) {
-      return Math.abs(offer.lat - property.lat) < NEARBY_IN_MAP ||
-        Math.abs(offer.lng - property.lng) < NEARBY_IN_MAP;
-    }
+  // const propertyNearbyOffers = offers.filter((offer) => {
+  //   if (property) {
+  //     return Math.abs(offer.lat - property.lat) < NEARBY_IN_MAP ||
+  //       Math.abs(offer.lng - property.lng) < NEARBY_IN_MAP;
+  //   }
 
-    return false;
-  });
+  //   return false;
+  // });
 
   return (
     <div className="page">
@@ -165,6 +166,7 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
                     </ul>
                     {isLoggedIn &&
                       <ReviewForm
+                        user={user}
                         onSendReview={onSendReview}
                       />}
                   </section>
@@ -176,7 +178,7 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
               <section className="near-places places">
                 <h2 className="near-places__title">Other places in the neighbourhood</h2>
 
-                <PlaceCardList sectionName='near-places' cards={propertyNearbyOffers} />
+                {/* <PlaceCardList sectionName='near-places' cards={propertyNearbyOffers} /> */}
               </section>
             </div>
           </>}
@@ -198,8 +200,6 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
             </div>
           </section>}
       </main>
-
-
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { TPlaceCard } from '../../types/offers';
 import { TReviews } from '../../types/reviews';
 import { ICurUser } from '../../types/user';
 import { TCity } from '../../types/city';
+import { TPoint } from '../../types/points';
 
 import {AppRoute, AuthorizationStatus} from '../../const';
 
@@ -16,16 +17,16 @@ import LoginPage from '../../pages/login-page/login-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import NotFoundPage from '../../pages/not-found-page/not-found';
 
-
 type TAppProps = {
   user: ICurUser;
   cities: TCity[];
   offers: TPlaceCard[];
+  points: TPoint[];
   reviews: TReviews;
 }
 
 function App(props: TAppProps): JSX.Element {
-  const {user, cities, offers, reviews} = props;
+  const {user, cities, offers, points, reviews} = props;
 
   return (
     <>
@@ -43,6 +44,7 @@ function App(props: TAppProps): JSX.Element {
                   <MainPage
                     cities={cities}
                     offers={offers}
+                    points={points}
                   />
                 }
               />
@@ -52,6 +54,7 @@ function App(props: TAppProps): JSX.Element {
                   <MainPage
                     cities={cities}
                     offers={offers}
+                    points={points}
                   />
                 }
               />
@@ -60,6 +63,7 @@ function App(props: TAppProps): JSX.Element {
               path={`${AppRoute.Property}/:id`}
               element={
                 <PropertyPage
+                  user={user}
                   offers={offers}
                   reviews={reviews}
                   isLoggedIn

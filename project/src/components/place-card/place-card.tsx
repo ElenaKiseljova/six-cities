@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react';
 import {Link} from 'react-router-dom';
 
 import {AppRoute} from '../../const';
@@ -7,19 +8,30 @@ import { TPlaceCard } from '../../types/offers';
 type TPlaceCardProps = {
   data: TPlaceCard;
   sectionName?: string;
-  onHoverIn?: (card: TPlaceCard) => void;
-  onHoverOut?: () => void;
+  onHover?: (placeName: string | undefined) => void;
 }
 
 function PlaceCard(props: TPlaceCardProps): JSX.Element {
-  const {data, sectionName, onHoverIn, onHoverOut} = props;
+  const {data, sectionName, onHover} = props;
   const {id, isPremium, cardImg, price, title, rating, inFavorites, type} = data;
+
+  const placeCardMouseEnterHandler = (evt: MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+
+    return typeof onHover === 'function' ? onHover(data.title) : false;
+  };
+
+  const placeCardMouseLeaveHandler = (evt: MouseEvent<HTMLElement>) => {
+    evt.preventDefault();
+
+    return typeof onHover === 'function' ? onHover(undefined) : false;
+  };
 
   return (
     <article
       className={`place-card ${sectionName ? `${sectionName}__place-card` : ''}`}
-      onMouseEnter={() => typeof onHoverIn === 'function' ? onHoverIn(data) : false}
-      onMouseLeave={() => typeof onHoverOut === 'function' ? onHoverOut() : false}
+      onMouseEnter={placeCardMouseEnterHandler}
+      onMouseLeave={placeCardMouseLeaveHandler}
     >
       {isPremium &&
         <div className="place-card__mark">

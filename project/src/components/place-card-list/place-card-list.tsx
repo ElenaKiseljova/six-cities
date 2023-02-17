@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { TPlaceCard } from '../../types/offers';
 
 import PlaceCard from '../place-card/place-card';
@@ -7,13 +5,12 @@ import PlaceCard from '../place-card/place-card';
 type TPlaceCardListProps = {
   sectionName?: string;
   additionalClasses?: string[] | string;
-  cards: TPlaceCard[];
+  offers: TPlaceCard[];
+  onPlaceCardHover: (placeName: string | undefined) => void;
 };
 
 function PlaceCardList(props: TPlaceCardListProps): JSX.Element {
-  const {sectionName, additionalClasses, cards} = props;
-
-  const [activeCard, setActiveCard] = useState(cards.length ? cards[0] : null);
+  const {sectionName, additionalClasses, offers, onPlaceCardHover} = props;
 
   let addClasses = '';
   if (additionalClasses) {
@@ -24,6 +21,10 @@ function PlaceCardList(props: TPlaceCardListProps): JSX.Element {
     }
   }
 
+  const placeCardHoverHandler = (placeName: string | undefined) => {
+    onPlaceCardHover(placeName);
+  };
+
   return (
     <div
       className={
@@ -31,20 +32,12 @@ function PlaceCardList(props: TPlaceCardListProps): JSX.Element {
       }
     >
       {
-        cards.map((offer) => (
+        offers.map((offer) => (
           <PlaceCard
             key={offer.id}
             sectionName={sectionName}
             data={offer}
-            onHoverIn={(hoveredCard) => {
-              setActiveCard(hoveredCard);
-            }}
-            onHoverOut={() => {
-              setActiveCard(null);
-
-              // eslint-disable-next-line no-console
-              console.log('activeCard', activeCard);
-            }}
+            onHover={placeCardHoverHandler}
           />))
       }
     </div>

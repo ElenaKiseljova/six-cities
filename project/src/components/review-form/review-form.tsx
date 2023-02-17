@@ -1,17 +1,18 @@
 import { FormEvent, ChangeEvent, useState, Fragment } from 'react';
-import { TReview } from '../../types/reviews';
 
-import {user} from '../../mocks/user';
+import { TReview } from '../../types/reviews';
+import { ICurUser } from '../../types/user';
 
 type TReviewFormProps = {
+  user: ICurUser;
   onSendReview: (review: TReview) => void;
 }
 
 function ReviewForm(props: TReviewFormProps): JSX.Element {
-  const {onSendReview} = props;
+  const {user, onSendReview} = props;
 
-  const [reviewRating, setReviewRating] = useState(0);
-  const [reviewText, setReviewText] = useState('');
+  const [reviewRating, setReviewRating] = useState<number>(0);
+  const [reviewText, setReviewText] = useState<string>('');
 
   const stars = {
     'perfect': 5,
