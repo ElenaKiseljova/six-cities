@@ -27,8 +27,8 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
   const propertyReviews = id && reviews[id] ? reviews[id] : [];
   const propertyNearbyOffers = offers.filter((offer) => {
     if (property) {
-      return Math.abs(offer.map[0] - property.map[0]) < NEARBY_IN_MAP ||
-        Math.abs(offer.map[1] - property.map[1]) < NEARBY_IN_MAP;
+      return Math.abs(offer.lat - property.lat) < NEARBY_IN_MAP ||
+        Math.abs(offer.lng - property.lng) < NEARBY_IN_MAP;
     }
 
     return false;
