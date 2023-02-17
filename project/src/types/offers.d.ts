@@ -1,7 +1,9 @@
 import { TReview } from './reviews';
 import { THost } from './host';
+import { TPoint } from './points';
+import { TCity } from './city';
 
-export type TPlaceCard = {
+export type TPlaceCard = TPoint & {
   id: string;
   isPremium: boolean;
   cardImg: string;
@@ -11,13 +13,12 @@ export type TPlaceCard = {
   title: string;
   type: 'Private room' | 'Apartment';
   inFavorites: boolean;
-  city: string;
+  city: TCity;
   reviews: TReview[];
   bedrooms: number;
   adults: number;
   features: string[];
   host: THost;
-  map: [number, number];
 };
 
 export type TPlaceCardByCity = {

@@ -4,12 +4,13 @@ import { Link, useParams } from 'react-router-dom';
 import {AppRoute} from '../../const';
 
 import { TPlaceCard } from '../../types/offers';
+import { TCity } from '../../types/city';
 
 import Header from '../../components/header/header';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
 
 type TMainPageProps = {
-  cities: string[];
+  cities: TCity[];
   offers: TPlaceCard[];
 }
 
@@ -18,7 +19,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
 
   const {city} = useParams();
 
-  const filteredOffers = city ? offers.filter((offer) => offer.city === city) : offers;
+  const filteredOffers = city ? offers.filter((offer) => offer.city.title === city) : offers;
   const placesCount = filteredOffers.length;
 
   return (
@@ -34,12 +35,12 @@ function MainPage(props: TMainPageProps): JSX.Element {
           <section className="locations container">
             <ul className="locations__list tabs__list">
               {cities.map((c) => (
-                <li key={c} className="locations__item">
+                <li key={c.title} className="locations__item">
                   <Link
-                    className={`locations__item-link tabs__item ${c === city ? 'tabs__item--active' : ''}`}
-                    to={`${AppRoute.Root}${c}`}
+                    className={`locations__item-link tabs__item ${c.title === city ? 'tabs__item--active' : ''}`}
+                    to={`${AppRoute.Root}${c.title}`}
                   >
-                    <span>{c}</span>
+                    <span>{c.title}</span>
                   </Link>
                 </li>
               ))}
@@ -53,7 +54,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">{placesCount} places to stay in {city}</b>
                 <form className="places__sorting" action="#" method="get">
-                  <span className="places__sorting-caption">Sort by</span>
+                  <span className="places__sorting-caption">Sort by&nbsp;</span>
                   <span className="places__sorting-type" tabIndex={0}>
                     Popular
                     <svg className="places__sorting-arrow" width="7" height="4">

@@ -4,6 +4,7 @@ import {HelmetProvider} from 'react-helmet-async';
 import { TPlaceCard } from '../../types/offers';
 import { TReviews } from '../../types/reviews';
 import { ICurUser } from '../../types/user';
+import { TCity } from '../../types/city';
 
 import {AppRoute, AuthorizationStatus} from '../../const';
 
@@ -15,9 +16,10 @@ import LoginPage from '../../pages/login-page/login-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import NotFoundPage from '../../pages/not-found-page/not-found';
 
+
 type TAppProps = {
   user: ICurUser;
-  cities: string[];
+  cities: TCity[];
   offers: TPlaceCard[];
   reviews: TReviews;
 }

@@ -10,3 +10,8 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+
+export enum URL_MARKER {
+  default = 'https://github.com/ElenaKiseljova/ElenaKiseljova.github.io/raw/main/img/pin.svg',
+  current = 'https://github.com/ElenaKiseljova/ElenaKiseljova.github.io/raw/main/img/main-pin.svg',
+}
