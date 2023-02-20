@@ -1,40 +1,44 @@
 import {Helmet} from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
+import {useState} from 'react';
 
 import { TReview, TReviews } from '../../types/reviews';
 import { TPlaceCard } from '../../types/offers';
 import { ICurUser } from '../../types/user';
+import { TPoint } from '../../types/points';
 
 import Header from '../../components/header/header';
-// import PlaceCardList from '../../components/place-card-list/place-card-list';
+import PlaceCardList from '../../components/place-card-list/place-card-list';
 import ReviewForm from '../../components/review-form/review-form';
 import ReviewList from '../../components/review-list/review-list';
+import Map from '../../components/map/map';
+
 
 type TPropertyPageProps = {
   user: ICurUser;
   reviews: TReviews;
   offers: TPlaceCard[];
+  nearbyOffers: TPlaceCard[];
+  nearbyPoints: TPoint[];
   isLoggedIn: boolean;
   onSendReview: (review: TReview) => void;
 }
 
 function PropertyPage(props: TPropertyPageProps): JSX.Element {
-  const {user, reviews, offers, isLoggedIn, onSendReview} = props;
+  const {user, reviews, offers, nearbyOffers, nearbyPoints, isLoggedIn, onSendReview} = props;
 
   const {id} = useParams();
 
-  // const NEARBY_IN_MAP = 0.01;
-
   const property = offers.find((offer) => offer.id === id);
   const propertyReviews = id && reviews[id] ? reviews[id] : [];
-  // const propertyNearbyOffers = offers.filter((offer) => {
-  //   if (property) {
-  //     return Math.abs(offer.lat - property.lat) < NEARBY_IN_MAP ||
-  //       Math.abs(offer.lng - property.lng) < NEARBY_IN_MAP;
-  //   }
 
-  //   return false;
-  // });
+  const [selectedPoint, setSelectedPoint] = useState<TPoint | undefined>(undefined);
+
+  const onPlaceCardHoverHandler = (placeName: string | undefined) => {
+    const curPoint = nearbyPoints.find((nearbyPoint) => placeName ? nearbyPoint.title === placeName : false);
+
+    setSelectedPoint(curPoint);
+  };
 
   return (
     <div className="page">
@@ -148,13 +152,23 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
                   </section>
                 </div>
               </div>
-              <section className="property__map map"></section>
+              <Map
+                city={property.city}
+                points={nearbyPoints}
+                offers={nearbyOffers}
+                selectedPoint={selectedPoint}
+                classList="property__map"
+              />
             </section>
             <div className="container">
               <section className="near-places places">
                 <h2 className="near-places__title">Other places in the neighbourhood</h2>
 
-                {/* <PlaceCardList sectionName='near-places' cards={propertyNearbyOffers} /> */}
+                <PlaceCardList
+                  sectionName='near-places'
+                  offers={nearbyOffers}
+                  onPlaceCardHover={onPlaceCardHoverHandler}
+                />
               </section>
             </div>
           </>}

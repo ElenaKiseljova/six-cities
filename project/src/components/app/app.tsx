@@ -21,12 +21,14 @@ type TAppProps = {
   user: ICurUser;
   cities: TCity[];
   offers: TPlaceCard[];
+  nearbyOffers: TPlaceCard[];
+  nearbyPoints: TPoint[];
   points: TPoint[];
   reviews: TReviews;
 }
 
 function App(props: TAppProps): JSX.Element {
-  const {user, cities, offers, points, reviews} = props;
+  const {user, cities, offers, nearbyOffers, nearbyPoints, points, reviews} = props;
 
   return (
     <>
@@ -65,6 +67,8 @@ function App(props: TAppProps): JSX.Element {
                 <PropertyPage
                   user={user}
                   offers={offers}
+                  nearbyOffers={nearbyOffers}
+                  nearbyPoints={nearbyPoints}
                   reviews={reviews}
                   isLoggedIn
                   onSendReview={() => {

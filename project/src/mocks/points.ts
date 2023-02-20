@@ -62,3 +62,24 @@ export const points: TPoint[] = [
     city: cities[5],
   },
 ];
+
+export const nearbyPoints: TPoint[] = [
+  {
+    title: amstrdamOffers[0]?.title,
+    lat: 52.3909553943508,
+    lng: 4.85309666406198,
+    city: cities[0],
+  },
+  {
+    title: amstrdamOffers[1]?.title,
+    lat: 52.369553943508,
+    lng: 4.85309666406198,
+    city: cities[0],
+  },
+  {
+    title: amstrdamOffers[2]?.title,
+    lat: 52.3909553943508,
+    lng: 4.929309666406198,
+    city: cities[0],
+  },
+];

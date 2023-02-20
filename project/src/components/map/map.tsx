@@ -16,6 +16,7 @@ type TMapProps = {
   points: TPoint[];
   offers: TPlaceCard[];
   selectedPoint: TPoint | undefined;
+  classList?: string;
 }
 
 const defaultCustomIcon = new Icon({
@@ -31,7 +32,7 @@ const currentCustomIcon = new Icon({
 });
 
 function Map (props: TMapProps): JSX.Element {
-  const {city, points, offers, selectedPoint} = props;
+  const {city, points, offers, selectedPoint, classList} = props;
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, city || {
@@ -98,7 +99,7 @@ function Map (props: TMapProps): JSX.Element {
   }, [city]);
   return (
     <section
-      className="cities__map map"
+      className={`${classList ? classList : 'cities__map'} map`}
       ref={mapRef}
     >
     </section>
