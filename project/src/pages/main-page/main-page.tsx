@@ -24,8 +24,11 @@ function MainPage(props: TMainPageProps): JSX.Element {
   const {city: cityName} = useParams();
 
   const city = cities.find((c) => c.title === cityName);
+
   const offersInCity = cityName ? offers.filter((offer) => offer.city.title === cityName) : offers;
-  const placesCount = offersInCity.length;
+  const pointsInCity = cityName ? points.filter((point) => point.city.title === cityName) : points;
+
+  const offersCount = offersInCity.length;
 
   const [selectedPoint, setSelectedPoint] = useState<TPoint | undefined>(undefined);
 
@@ -42,7 +45,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
       </Helmet>
       <Header />
 
-      <main className={`page__main page__main--index ${placesCount > 0 ? '' : 'page__main--index-empty'}`}>
+      <main className={`page__main page__main--index ${offersCount > 0 ? '' : 'page__main--index-empty'}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
@@ -61,11 +64,11 @@ function MainPage(props: TMainPageProps): JSX.Element {
           </section>
         </div>
         <div className="cities">
-          <div className={`cities__places-container container ${placesCount > 0 ? '' : 'cities__places-container--empty'}`}>
-            { placesCount > 0 &&
+          <div className={`cities__places-container container ${offersCount > 0 ? '' : 'cities__places-container--empty'}`}>
+            { offersCount > 0 &&
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{placesCount} places to stay in {cityName}</b>
+                <b className="places__found">{offersCount} places to stay in {cityName}</b>
                 <form className="places__sorting" action="#" method="get">
                   <span className="places__sorting-caption">Sort by&nbsp;</span>
                   <span className="places__sorting-type" tabIndex={0}>
@@ -90,7 +93,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
                 />
               </section>}
 
-            { placesCount === 0 &&
+            { offersCount === 0 &&
               <section className="cities__no-places">
                 <div className="cities__status-wrapper tabs__content">
                   <b className="cities__status">No places to stay available</b>
@@ -99,10 +102,11 @@ function MainPage(props: TMainPageProps): JSX.Element {
               </section>}
 
             <div className="cities__right-section">
-              {placesCount > 0 &&
+              {offersCount > 0 &&
                 <Map
                   city={city}
-                  points={points}
+                  points={pointsInCity}
+                  offers={offersInCity}
                   selectedPoint={selectedPoint}
                 />}
             </div>

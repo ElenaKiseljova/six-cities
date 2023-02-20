@@ -7,12 +7,14 @@ import {URL_MARKER} from '../../const';
 
 import { TPoint } from '../../types/points';
 import { TCity } from '../../types/city';
+import { TPlaceCard } from '../../types/offers';
 
 import 'leaflet/dist/leaflet.css';
 
 type TMapProps = {
   city: TCity | undefined;
   points: TPoint[];
+  offers: TPlaceCard[];
   selectedPoint: TPoint | undefined;
 }
 
@@ -29,24 +31,47 @@ const currentCustomIcon = new Icon({
 });
 
 function Map (props: TMapProps): JSX.Element {
-  const {city, points, selectedPoint} = props;
+  const {city, points, offers, selectedPoint} = props;
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, city || {
     lat: 52.38249006767424,
     lng: 4.891808097764281,
-    zoom: 10,
+    zoom: 5,
     title: 'Amsterdam'
   });
 
+  const markers = useRef<{[cityTitle: string]: Marker[]}>({});
+
   useEffect(() => {
     if (map) {
+      // Создание новых маркеров
       points.forEach((point) => {
         const marker = new Marker({
           lat: point.lat,
-          lng: point.lng
+          lng: point.lng,
+        },
+        {
+          title: point.title,
         });
 
+        // Добавление новых маркеров в объект
+        markers.current[city?.title || 'all'] ?
+          markers.current[city?.title || 'all'].push(marker) :
+          markers.current[city?.title || 'all'] = [];
+
+        // Шаблон попапа маркера
+        const pointOffer = offers.find((o) => o.title === point.title);
+        if (pointOffer) {
+          const popupTemplate = `
+            <img src="${pointOffer.cardImg}" />
+            <h4>${pointOffer.title}</h4>
+            <a href="/offer/${pointOffer.id}">Go To The Offer</a>
+          `;
+          marker.bindPopup(popupTemplate);
+        }
+
+        // Добавление маркера на карту
         marker
           .setIcon(
             selectedPoint !== undefined && point.title === selectedPoint.title
@@ -56,8 +81,21 @@ function Map (props: TMapProps): JSX.Element {
           .addTo(map);
       });
     }
-  }, [map, points, selectedPoint]);
+  }, [map, points, offers, city, selectedPoint]);
 
+  useEffect(() => {
+    // Проверка наличия отрисованных маркеров других городов
+    if (Object.keys(markers.current).length) {
+      for (const [c, m] of Object.entries(markers.current)) {
+        if (c !== (city?.title || 'all')) {
+          m.forEach((mark) => mark.remove());
+
+          // Удаление ключа с маркерами из объекта
+          delete markers.current[c];
+        }
+      }
+    }
+  }, [city]);
   return (
     <section
       className="cities__map map"

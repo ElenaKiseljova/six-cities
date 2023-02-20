@@ -40,7 +40,9 @@ function useMap(
     if (isInitedMap.current && map) {
       const center = new LatLng(city.lat, city.lng);
 
-      instanceMap.current?.setView(center, city.zoom);
+      // instanceMap.current?.setView(center, city.zoom);
+      // instanceMap.current?.panTo(center, {animate: true});
+      instanceMap.current?.flyTo(center, city.zoom, {animate: true});
     }
   }, [mapRef, map, city]);
 
