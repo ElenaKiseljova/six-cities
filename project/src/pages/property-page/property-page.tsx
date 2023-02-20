@@ -8,6 +8,7 @@ import { ICurUser } from '../../types/user';
 import Header from '../../components/header/header';
 // import PlaceCardList from '../../components/place-card-list/place-card-list';
 import ReviewForm from '../../components/review-form/review-form';
+import ReviewList from '../../components/review-list/review-list';
 
 type TPropertyPageProps = {
   user: ICurUser;
@@ -137,33 +138,8 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
                     </div>
                   </div>
                   <section className="property__reviews reviews">
-                    <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{propertyReviews.length}</span></h2>
-                    <ul className="reviews__list">
-                      {propertyReviews.map((propertyReview) => (
-                        <li key={propertyReview.id} className="reviews__item">
-                          <div className="reviews__user user">
-                            <div className="reviews__avatar-wrapper user__avatar-wrapper">
-                              <img className="reviews__avatar user__avatar" src= {propertyReview.user.img} width="54" height="54" alt={propertyReview.user.name} />
-                            </div>
-                            <span className="reviews__user-name">
-                              {propertyReview.user.name}
-                            </span>
-                          </div>
-                          <div className="reviews__info">
-                            <div className="reviews__rating rating">
-                              <div className="reviews__stars rating__stars">
-                                <span style={{width: `${propertyReview.rating}%`}}></span>
-                                <span className="visually-hidden">Rating</span>
-                              </div>
-                            </div>
-                            <p className="reviews__text">
-                              {propertyReview.text}
-                            </p>
-                            <time className="reviews__time" dateTime={propertyReview.date}>{Intl.DateTimeFormat('en-ES', {month: 'short', day: 'numeric'}).format(new Date(propertyReview.date))}</time>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
+                    <ReviewList reviews={propertyReviews} />
+
                     {isLoggedIn &&
                       <ReviewForm
                         user={user}
