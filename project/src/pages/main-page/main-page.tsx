@@ -1,6 +1,5 @@
 import {Helmet} from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
-import { useState } from 'react';
 
 import {AppRoute} from '../../const';
 
@@ -11,6 +10,7 @@ import { TPoint } from '../../types/points';
 import Header from '../../components/header/header';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Map from '../../components/map/map';
+import useSelectedPoint from '../../hooks/useSelectedPoint';
 
 type TMainPageProps = {
   cities: TCity[];
@@ -30,13 +30,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
 
   const offersCount = offersInCity.length;
 
-  const [selectedPoint, setSelectedPoint] = useState<TPoint | undefined>(undefined);
-
-  const onPlaceCardHoverHandler = (placeName: string | undefined) => {
-    const curPoint = points.find((point) => placeName ? point.title === placeName : false);
-
-    setSelectedPoint(curPoint);
-  };
+  const {selectedPoint, onPlaceCardHoverHandler} = useSelectedPoint(points);
 
   return (
     <div className="page page--gray page--main">

@@ -13,7 +13,11 @@ function useMap(
   const instanceMap = useRef<Map | null>(null);
 
   useEffect(() => {
-    if (!isInitedMap.current && mapRef.current !== null) {
+    if (mapRef.current === null) {
+      return;
+    }
+
+    if (!isInitedMap.current) {
       isInitedMap.current = true;
 
       instanceMap.current = new Map(mapRef.current, {
@@ -35,9 +39,7 @@ function useMap(
       instanceMap.current.addLayer(layer);
 
       setMap(instanceMap.current);
-    }
-
-    if (isInitedMap.current && map) {
+    } else if (isInitedMap.current && map) {
       const center = new LatLng(city.lat, city.lng);
 
       // instanceMap.current?.setView(center, city.zoom);

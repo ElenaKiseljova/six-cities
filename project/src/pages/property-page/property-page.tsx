@@ -1,6 +1,5 @@
 import {Helmet} from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
-import {useState} from 'react';
 
 import { TReview, TReviews } from '../../types/reviews';
 import { TPlaceCard } from '../../types/offers';
@@ -12,6 +11,7 @@ import PlaceCardList from '../../components/place-card-list/place-card-list';
 import ReviewForm from '../../components/review-form/review-form';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
+import useSelectedPoint from '../../hooks/useSelectedPoint';
 
 
 type TPropertyPageProps = {
@@ -32,13 +32,7 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
   const property = offers.find((offer) => offer.id === id);
   const propertyReviews = id && reviews[id] ? reviews[id] : [];
 
-  const [selectedPoint, setSelectedPoint] = useState<TPoint | undefined>(undefined);
-
-  const onPlaceCardHoverHandler = (placeName: string | undefined) => {
-    const curPoint = nearbyPoints.find((nearbyPoint) => placeName ? nearbyPoint.title === placeName : false);
-
-    setSelectedPoint(curPoint);
-  };
+  const {selectedPoint, onPlaceCardHoverHandler} = useSelectedPoint(nearbyPoints);
 
   return (
     <div className="page">
