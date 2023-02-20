@@ -2,7 +2,12 @@ import { useState } from 'react';
 
 import { TPoint } from '../types/points';
 
-function useSelectedPoint(points: TPoint[]) {
+type TSelectedPointHook = {
+  onPlaceCardHoverHandler: (placeName: string | undefined) => void;
+  selectedPoint: TPoint | undefined;
+};
+
+function useSelectedPoint(points: TPoint[]): TSelectedPointHook {
   const [selectedPoint, setSelectedPoint] = useState<TPoint | undefined>(undefined);
 
   const onPlaceCardHoverHandler = (placeName: string | undefined) => {

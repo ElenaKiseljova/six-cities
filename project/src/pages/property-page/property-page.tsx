@@ -6,13 +6,13 @@ import { TPlaceCard } from '../../types/offers';
 import { ICurUser } from '../../types/user';
 import { TPoint } from '../../types/points';
 
+import useSelectedPoint from '../../hooks/useSelectedPoint';
+
 import Header from '../../components/header/header';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
 import ReviewForm from '../../components/review-form/review-form';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
-import useSelectedPoint from '../../hooks/useSelectedPoint';
-
 
 type TPropertyPageProps = {
   user: ICurUser;

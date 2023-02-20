@@ -5,6 +5,8 @@ import {AppRoute} from '../../const';
 
 import { TPlaceCard } from '../../types/offers';
 
+import Bookmark from '../bookmark/bookmark';
+
 type TPlaceCardProps = {
   data: TPlaceCard;
   sectionName?: string;
@@ -48,12 +50,8 @@ function PlaceCard(props: TPlaceCardProps): JSX.Element {
             <b className="place-card__price-value">&euro;{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className={`place-card__bookmark-button button ${inFavorites ? 'place-card__bookmark-button--active' : ''}`} type="button">
-            <svg className="place-card__bookmark-icon" width="18" height="19">
-              <use xlinkHref="#icon-bookmark"></use>
-            </svg>
-            <span className="visually-hidden">{ inFavorites ? 'In bookmarks' : 'To bookmarks'}</span>
-          </button>
+
+          <Bookmark inFavorites={inFavorites} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
