@@ -1,28 +1,25 @@
-import { useState } from 'react';
-
 type TBookmarksProps = {
-  inFavorites: boolean;
+  isActive: boolean;
+  onActiveChange: () => void;
   sectionName?: string;
 }
 
-function Bookmark({inFavorites, sectionName}: TBookmarksProps): JSX.Element {
-  const [inBookmark, setInBookmark] = useState(inFavorites);
-
+function Bookmark({isActive, onActiveChange, sectionName}: TBookmarksProps): JSX.Element {
   const bookmarkClass = sectionName ? sectionName : 'place-card';
 
   return (
     <button
       className={
         `${bookmarkClass}__bookmark-button button
-        ${inBookmark ? `${bookmarkClass}__bookmark-button--active` : ''}`
+        ${isActive ? `${bookmarkClass}__bookmark-button--active` : ''}`
       }
       type="button"
-      onClick={() => setInBookmark(!inBookmark)}
+      onClick={onActiveChange}
     >
-      <svg className="place-card__bookmark-icon" width="18" height="19">
+      <svg className={`${bookmarkClass}__bookmark-icon`} width="18" height="19">
         <use xlinkHref="#icon-bookmark"></use>
       </svg>
-      <span className="visually-hidden">{ inBookmark ? 'In bookmarks' : 'To bookmarks'}</span>
+      <span className="visually-hidden">{ isActive ? 'In bookmarks' : 'To bookmarks'}</span>
     </button>
   );
 }

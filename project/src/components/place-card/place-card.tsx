@@ -5,6 +5,8 @@ import {AppRoute} from '../../const';
 
 import { TPlaceCard } from '../../types/offers';
 
+import withActiveFlag from '../../hocs/with-active-flag';
+
 import Bookmark from '../bookmark/bookmark';
 
 type TPlaceCardProps = {
@@ -16,6 +18,8 @@ type TPlaceCardProps = {
 function PlaceCard(props: TPlaceCardProps): JSX.Element {
   const {data, sectionName, onHover} = props;
   const {id, isPremium, cardImg, price, title, rating, inFavorites, type} = data;
+
+  const BookmarkWrapped = withActiveFlag(Bookmark, inFavorites);
 
   const placeCardMouseEnterHandler = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
@@ -51,7 +55,7 @@ function PlaceCard(props: TPlaceCardProps): JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
 
-          <Bookmark inFavorites={inFavorites} />
+          <BookmarkWrapped />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

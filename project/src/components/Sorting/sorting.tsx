@@ -9,8 +9,12 @@ const SORTING_VALUES = {
   RATE: 'Top rated first',
 };
 
-function Sorting(): JSX.Element {
-  const [isOpened, setIsOpened] = useState(false);
+type TSortingProps = {
+  isActive: boolean;
+  onActiveChange: () => void;
+}
+
+function Sorting({isActive, onActiveChange}: TSortingProps): JSX.Element {
   const [sortBy, setSortBy] = useState(SORTING_VALUES.POPULAR);
 
   useEffect(() => {
@@ -18,11 +22,11 @@ function Sorting(): JSX.Element {
       const e = evt.target as HTMLElement;
 
       if (!e.closest('.places__sorting')) {
-        setIsOpened(false);
+        onActiveChange();
       }
     };
 
-    if (isOpened) {
+    if (isActive) {
       document.addEventListener('click', documentClickHandler);
     }
 
@@ -36,7 +40,7 @@ function Sorting(): JSX.Element {
       <span className="places__sorting-caption">Sort by&nbsp;</span>
       <span
         className="places__sorting-type" tabIndex={0}
-        onClick={() => setIsOpened(!isOpened)}
+        onClick={onActiveChange}
       >
         {sortBy}
         <svg className="places__sorting-arrow" width="7" height="4">
@@ -46,7 +50,7 @@ function Sorting(): JSX.Element {
       <ul
         className={cn(
           'places__options places__options--custom',
-          {'places__options--opened': isOpened}
+          {'places__options--opened': isActive}
         )}
       >
         {Object.entries(SORTING_VALUES).map(([key, value]) => (
@@ -59,7 +63,8 @@ function Sorting(): JSX.Element {
             tabIndex={0}
             onClick={() => {
               setSortBy(value);
-              setIsOpened(false);
+
+              onActiveChange();
             }}
           >
             {value}

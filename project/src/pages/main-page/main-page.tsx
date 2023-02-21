@@ -9,10 +9,12 @@ import { TPoint } from '../../types/points';
 
 import useSelectedPoint from '../../hooks/useSelectedPoint';
 
+import withActiveFlag from '../../hocs/with-active-flag';
+
 import Header from '../../components/header/header';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Map from '../../components/map/map';
-import Sorting from '../../components/Sorting/sorting';
+import Sorting from '../../components/sorting/sorting';
 
 type TMainPageProps = {
   cities: TCity[];
@@ -24,6 +26,8 @@ function MainPage(props: TMainPageProps): JSX.Element {
   const { cities, offers, points } = props;
 
   const {city: cityName} = useParams();
+
+  const SortingWrapped = withActiveFlag(Sorting);
 
   const city = cities.find((c) => c.title === cityName);
 
@@ -66,7 +70,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">{offersCount} places to stay in {cityName}</b>
 
-                <Sorting />
+                <SortingWrapped />
 
                 <PlaceCardList
                   sectionName='cities'

@@ -8,11 +8,14 @@ import { TPoint } from '../../types/points';
 
 import useSelectedPoint from '../../hooks/useSelectedPoint';
 
+import withActiveFlag from '../../hocs/with-active-flag';
+
 import Header from '../../components/header/header';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
 import ReviewForm from '../../components/review-form/review-form';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
+import Bookmark from '../../components/bookmark/bookmark';
 
 type TPropertyPageProps = {
   user: ICurUser;
@@ -33,6 +36,8 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
   const propertyReviews = id && reviews[id] ? reviews[id] : [];
 
   const {selectedPoint, onPlaceCardHoverHandler} = useSelectedPoint(nearbyPoints);
+
+  const BookmarkWrapped = withActiveFlag(Bookmark, property ? property.inFavorites : false);
 
   return (
     <div className="page">
@@ -67,12 +72,8 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
                     <h1 className="property__name">
                       {property.title}
                     </h1>
-                    <button className={`property__bookmark-button button ${property.inFavorites ? 'property__bookmark-button--active' : ''}`} type="button">
-                      <svg className="property__bookmark-icon" width="31" height="33">
-                        <use xlinkHref="#icon-bookmark"></use>
-                      </svg>
-                      <span className="visually-hidden">To bookmarks</span>
-                    </button>
+
+                    <BookmarkWrapped sectionName="property" />
                   </div>
                   <div className="property__rating rating">
                     <div className="property__stars rating__stars">
