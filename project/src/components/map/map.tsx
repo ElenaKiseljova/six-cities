@@ -39,7 +39,7 @@ function Map (props: TMapProps): JSX.Element {
     lat: 52.38249006767424,
     lng: 4.891808097764281,
     zoom: 5,
-    title: 'Amsterdam'
+    title: 'all'
   });
 
   const markers = useRef<{[cityTitle: string]: Marker[]}>({});
@@ -59,7 +59,7 @@ function Map (props: TMapProps): JSX.Element {
         // Добавление новых маркеров в объект
         markers.current[city?.title || 'all'] ?
           markers.current[city?.title || 'all'].push(marker) :
-          markers.current[city?.title || 'all'] = [];
+          markers.current[city?.title || 'all'] = [marker];
 
         // Шаблон попапа маркера
         const pointOffer = offers.find((o) => o.title === point.title);
@@ -89,6 +89,7 @@ function Map (props: TMapProps): JSX.Element {
     if (Object.keys(markers.current).length) {
       for (const [c, m] of Object.entries(markers.current)) {
         if (c !== (city?.title || 'all')) {
+          // Удаление слоёв маркеров
           m.forEach((mark) => mark.remove());
 
           // Удаление ключа с маркерами из объекта

@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+
+import { SORTING_VALUES } from '../../const';
+
+import {useAppSelector, useAppDispatch} from '../../hooks';
+
+import {setSorting} from '../../store/action';
 
 import cn from 'classnames';
-
-const SORTING_VALUES = {
-  POPULAR: 'Popular',
-  PRICE_LOW_TO_HIGHT: 'Price: low to high',
-  PRICE_HIGHT_TO_LOW: 'Price: high to low',
-  RATE: 'Top rated first',
-};
 
 type TSortingProps = {
   isActive: boolean;
@@ -15,7 +14,8 @@ type TSortingProps = {
 }
 
 function Sorting({isActive, onActiveChange}: TSortingProps): JSX.Element {
-  const [sortBy, setSortBy] = useState(SORTING_VALUES.POPULAR);
+  const dispatch = useAppDispatch();
+  const sortBy = useAppSelector((state) => state.sorting);
 
   useEffect(() => {
     const documentClickHandler = (evt: Event) => {
@@ -62,7 +62,7 @@ function Sorting({isActive, onActiveChange}: TSortingProps): JSX.Element {
             )}
             tabIndex={0}
             onClick={() => {
-              setSortBy(value);
+              dispatch(setSorting(value));
 
               onActiveChange();
             }}

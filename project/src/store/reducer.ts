@@ -1,29 +1,52 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { offers } from '../mocks/offers';
+import { offers, nearbyOffers } from '../mocks/offers';
+import { cities } from '../mocks/cities';
+
+import { SORTING_VALUES } from '../const';
 
 import { TCity } from '../types/city';
 import { TPlaceCard } from '../types/offers';
 
-import { setCity, setOffers } from './action';
+import { setCity, setOffers, setNearbyOffers, setSorting } from './action';
 
 interface IState {
-  city: TCity | null;
+  city: TCity | undefined;
   offers: TPlaceCard[];
+  nearbyOffers: TPlaceCard[];
+  sorting: SORTING_VALUES;
 }
 
 const initialState: IState = {
-  city: null,
+  city: undefined,
   offers: [],
+  nearbyOffers: [],
+  sorting: SORTING_VALUES.POPULAR,
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(setCity, (state, action) => {
-      state.city = { ...action.payload };
+      const cityName = action.payload;
+
+      if (state.city?.title !== cityName) {
+        if (typeof cityName === 'string') {
+          const city = cities.find((c) => c.title === action.payload);
+
+          state.city = city ? { ...city } : undefined;
+        } else {
+          state.city = cityName;
+        }
+      }
     })
     .addCase(setOffers, (state, action) => {
       state.offers = [...offers];
+    })
+    .addCase(setNearbyOffers, (state, action) => {
+      state.nearbyOffers = [...nearbyOffers];
+    })
+    .addCase(setSorting, (state, action) => {
+      state.sorting = action.payload;
     });
 });
 

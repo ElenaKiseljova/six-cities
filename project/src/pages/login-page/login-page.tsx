@@ -1,6 +1,8 @@
 import {Helmet} from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
+import { AppRoute } from '../../const';
+
 import { TCity } from '../../types/city';
 
 import Header from '../../components/header/header';
@@ -39,7 +41,7 @@ function LoginPage({cities}: TLoginPageProps): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link className="locations__item-link" to={`/${city.title}`}>
+              <Link className="locations__item-link" to={`${AppRoute.Root}${city.title}`}>
                 <span>{city.title}</span>
               </Link>
             </div>

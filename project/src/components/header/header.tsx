@@ -1,10 +1,16 @@
 import {Link} from 'react-router-dom';
 
+import {useAppDispatch} from '../../hooks';
+
+import {setCity} from '../../store/action';
+
 import {AppRoute} from '../../const';
 
 import {user} from '../../mocks/user';
 
 function Header(): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const isLoggedIn = true;
 
   return (
@@ -12,7 +18,11 @@ function Header(): JSX.Element {
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <Link className="header__logo-link header__logo-link--active" to={AppRoute.Root}>
+            <Link
+              className="header__logo-link header__logo-link--active"
+              to={AppRoute.Root}
+              onClick={() => dispatch(setCity(undefined))}
+            >
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
             </Link>
           </div>

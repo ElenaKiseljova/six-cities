@@ -1,17 +1,21 @@
+import { Navigate, useParams } from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
-import { Link, Navigate, useParams } from 'react-router-dom';
 
-import {AppRoute} from '../../const';
+import { AppRoute, SORTING_VALUES } from '../../const';
 
 import { TPlaceCard } from '../../types/offers';
 import { TCity } from '../../types/city';
 import { TPoint } from '../../types/points';
 
+import {useAppSelector, useAppDispatch} from '../../hooks';
 import useSelectedPoint from '../../hooks/useSelectedPoint';
+
+import {setCity} from '../../store/action';
 
 import withActiveFlag from '../../hocs/with-active-flag';
 
 import Header from '../../components/header/header';
+import CitiesList from '../../components/cities-list/cities-list';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Map from '../../components/map/map';
 import Sorting from '../../components/sorting/sorting';
@@ -22,25 +26,51 @@ type TMainPageProps = {
   points: TPoint[];
 }
 
+const getSortedOffersBy = (arr: TPlaceCard[], by: SORTING_VALUES): TPlaceCard[] => {
+  switch (by) {
+    case SORTING_VALUES.RATE:
+      return arr.sort((a, b) => b.rating - a.rating);
+
+    case SORTING_VALUES.PRICE_LOW_TO_HIGHT:
+      return arr.sort((a, b) => a.price - b.price);
+
+    case SORTING_VALUES.PRICE_HIGHT_TO_LOW:
+      return arr.sort((a, b) => b.price - a.price);
+
+    default:
+      return [...arr];
+  }
+};
+
 function MainPage(props: TMainPageProps): JSX.Element {
   const { cities, offers, points } = props;
 
-  const {city: cityName} = useParams();
-
   const SortingWrapped = withActiveFlag(Sorting);
 
-  const city = cities.find((c) => c.title === cityName);
+  const {city: cityName} = useParams();
 
-  const offersInCity = cityName ? offers.filter((offer) => offer.city.title === cityName) : offers;
-  const pointsInCity = cityName ? points.filter((point) => point.city.title === cityName) : points;
+  const dispatch = useAppDispatch();
 
-  const offersCount = offersInCity.length;
+  const city = useAppSelector((state) => state.city);
+  const sortBy = useAppSelector((state) => state.sorting);
 
   const {selectedPoint, onPlaceCardHoverHandler} = useSelectedPoint(points);
 
-  if (cityName && typeof city === 'undefined') {
-    return <Navigate to="/" replace />;
+  // проверка на несуществующий город
+  const cityByRouteName = cities.find((c) => c.title === cityName);
+  if (cityName && typeof cityByRouteName === 'undefined') {
+    return <Navigate to={AppRoute.Root} replace />;
   }
+
+  if (cityName && city?.title !== cityName) {
+    dispatch(setCity(cityName));
+  }
+
+  const offersInCity = cityName ? offers.filter((offer) => offer.city.title === cityName) : offers;
+  const offersInCitySorting = getSortedOffersBy(offersInCity, sortBy);
+  const pointsInCity = cityName ? points.filter((point) => point.city.title === cityName) : points;
+
+  const offersCount = offersInCity.length;
 
   return (
     <div className="page page--gray page--main">
@@ -52,20 +82,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
       <main className={`page__main page__main--index ${offersCount > 0 ? '' : 'page__main--index-empty'}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              {cities.map((c) => (
-                <li key={c.title} className="locations__item">
-                  <Link
-                    className={`locations__item-link tabs__item ${c.title === cityName ? 'tabs__item--active' : ''}`}
-                    to={`${AppRoute.Root}${c.title}`}
-                  >
-                    <span>{c.title}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
+          <CitiesList cities={cities} curCity={cityName} />
         </div>
         <div className="cities">
           <div className={`cities__places-container container ${offersCount > 0 ? '' : 'cities__places-container--empty'}`}>
@@ -79,7 +96,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
                 <PlaceCardList
                   sectionName='cities'
                   additionalClasses={'tabs__content'}
-                  offers={offersInCity}
+                  offers={offersInCitySorting}
                   onPlaceCardHover={onPlaceCardHoverHandler}
                 />
               </section>}
