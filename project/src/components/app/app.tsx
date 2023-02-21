@@ -80,7 +80,7 @@ function App(props: TAppProps): JSX.Element {
             />
             <Route
               path={AppRoute.Login}
-              element={<LoginPage />}
+              element={<LoginPage cities={cities} />}
             />
             <Route
               path={AppRoute.Favorites}

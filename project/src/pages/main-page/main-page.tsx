@@ -1,5 +1,5 @@
 import {Helmet} from 'react-helmet-async';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 
 import {AppRoute} from '../../const';
 
@@ -38,10 +38,14 @@ function MainPage(props: TMainPageProps): JSX.Element {
 
   const {selectedPoint, onPlaceCardHoverHandler} = useSelectedPoint(points);
 
+  if (cityName && typeof city === 'undefined') {
+    return <Navigate to="/" replace />;
+  }
+
   return (
     <div className="page page--gray page--main">
       <Helmet>
-        <title>{cityName ? cityName : 'Главная'} - 6 городов</title>
+        <title>{cityName ? cityName : 'Main'} - 6 cities</title>
       </Helmet>
       <Header />
 

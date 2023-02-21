@@ -1,11 +1,23 @@
 import {Helmet} from 'react-helmet-async';
+import { Link } from 'react-router-dom';
+
+import { TCity } from '../../types/city';
+
 import Header from '../../components/header/header';
 
-function LoginPage(): JSX.Element {
+type TLoginPageProps = {
+  cities: TCity[];
+}
+
+function LoginPage({cities}: TLoginPageProps): JSX.Element {
+  const getRandomCity = () => cities[Math.abs(Math.floor(Math.random() * cities.length) - 1)];
+
+  const city = getRandomCity();
+
   return (
     <div className="page page--gray page--login">
       <Helmet>
-        <title>Страница входа - 6 городов</title>
+        <title>Login - 6 cities</title>
       </Helmet>
       <Header />
 
@@ -27,9 +39,9 @@ function LoginPage(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#top">
-                <span>Amsterdam</span>
-              </a>
+              <Link className="locations__item-link" to={`/${city.title}`}>
+                <span>{city.title}</span>
+              </Link>
             </div>
           </section>
         </div>

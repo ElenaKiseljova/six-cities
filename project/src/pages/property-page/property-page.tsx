@@ -42,7 +42,7 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
   return (
     <div className="page">
       <Helmet>
-        <title>{property ? property.title : 'Офер не найден'} - 6 городов</title>
+        <title>{property ? property.title : 'Offer not found'} - 6 cities</title>
       </Helmet>
       <Header />
 
@@ -177,7 +177,7 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
               <div className="property__wrapper">
                 <div className="property__name-wrapper">
                   <h1 className="property__name">
-                    Офер не найден
+                    Offer not found
                   </h1>
                 </div>
               </div>

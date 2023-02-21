@@ -31,7 +31,7 @@ function FavoritesPage(props: TFavoritesPageProps): JSX.Element {
   return (
     <div className={`page ${favoritesPlaceCards.length > 0 ? '' : 'page--favorites-empty'}`}>
       <Helmet>
-        <title>Избранные комнаты - 6 городов</title>
+        <title>Favorites offers - 6 cities</title>
       </Helmet>
       <Header />
 
