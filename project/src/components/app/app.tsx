@@ -67,6 +67,7 @@ function App(props: TAppProps): JSX.Element {
                 <PropertyPage
                   user={user}
                   offers={offers}
+                  points={points}
                   nearbyOffers={nearbyOffers}
                   nearbyPoints={nearbyPoints}
                   reviews={reviews}

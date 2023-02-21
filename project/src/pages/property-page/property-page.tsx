@@ -6,8 +6,6 @@ import { TPlaceCard } from '../../types/offers';
 import { ICurUser } from '../../types/user';
 import { TPoint } from '../../types/points';
 
-import useSelectedPoint from '../../hooks/useSelectedPoint';
-
 import withActiveFlag from '../../hocs/with-active-flag';
 
 import Header from '../../components/header/header';
@@ -21,6 +19,7 @@ type TPropertyPageProps = {
   user: ICurUser;
   reviews: TReviews;
   offers: TPlaceCard[];
+  points: TPoint[];
   nearbyOffers: TPlaceCard[];
   nearbyPoints: TPoint[];
   isLoggedIn: boolean;
@@ -28,16 +27,17 @@ type TPropertyPageProps = {
 }
 
 function PropertyPage(props: TPropertyPageProps): JSX.Element {
-  const {user, reviews, offers, nearbyOffers, nearbyPoints, isLoggedIn, onSendReview} = props;
+  const {user, reviews, offers, points, nearbyOffers, nearbyPoints, isLoggedIn, onSendReview} = props;
 
   const {id} = useParams();
 
   const property = offers.find((offer) => offer.id === id);
   const propertyReviews = id && reviews[id] ? reviews[id] : [];
 
-  const {selectedPoint, onPlaceCardHoverHandler} = useSelectedPoint(nearbyPoints);
-
   const BookmarkWrapped = withActiveFlag(Bookmark, property ? property.inFavorites : false);
+
+  const propertyPoint = points.find((p) => p.title === property?.title);
+  const propertyPoints = propertyPoint ? [...nearbyPoints, propertyPoint] : [...nearbyPoints];
 
   return (
     <div className="page">
@@ -149,9 +149,9 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
               </div>
               <Map
                 city={property.city}
-                points={nearbyPoints}
+                points={propertyPoints}
                 offers={nearbyOffers}
-                selectedPoint={selectedPoint}
+                selectedPoint={propertyPoint}
                 classList="property__map"
               />
             </section>
@@ -162,7 +162,6 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
                 <PlaceCardList
                   sectionName='near-places'
                   offers={nearbyOffers}
-                  onPlaceCardHover={onPlaceCardHoverHandler}
                 />
               </section>
             </div>
