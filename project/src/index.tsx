@@ -10,6 +10,7 @@ import {reviews} from './mocks/reviews';
 import {points, nearbyPoints} from './mocks/points';
 
 import App from './components/app/app';
+import ErrorMessage from './components/error-message/error-message';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -18,6 +19,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+      <ErrorMessage />
       <App
         user={user}
         offers={offers}
