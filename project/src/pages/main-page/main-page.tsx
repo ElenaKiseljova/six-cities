@@ -22,7 +22,6 @@ import Sorting from '../../components/sorting/sorting';
 
 type TMainPageProps = {
   cities: TCity[];
-  offers: TPlaceCard[];
   points: TPoint[];
 }
 
@@ -43,7 +42,7 @@ const getSortedOffersBy = (arr: TPlaceCard[], by: SORTING_VALUES): TPlaceCard[] 
 };
 
 function MainPage(props: TMainPageProps): JSX.Element {
-  const { cities, offers, points } = props;
+  const { cities, points } = props;
 
   const SortingWrapped = withActiveFlag(Sorting);
 
@@ -52,6 +51,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const city = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => state.offers);
   const sortBy = useAppSelector((state) => state.sorting);
 
   const {selectedPoint, onPlaceCardHoverHandler} = useSelectedPoint(points);

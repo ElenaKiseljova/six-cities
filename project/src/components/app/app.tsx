@@ -45,7 +45,6 @@ function App(props: TAppProps): JSX.Element {
                 element={
                   <MainPage
                     cities={cities}
-                    offers={offers}
                     points={points}
                   />
                 }
@@ -55,7 +54,6 @@ function App(props: TAppProps): JSX.Element {
                 element={
                   <MainPage
                     cities={cities}
-                    offers={offers}
                     points={points}
                   />
                 }
