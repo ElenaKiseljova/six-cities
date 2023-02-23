@@ -13,6 +13,7 @@ import {
   setNearbyOffers,
   setSorting,
   requireAuthorization,
+  setError,
 } from './action';
 
 interface IState {
@@ -22,6 +23,7 @@ interface IState {
   nearbyOffers: TPlaceCard[];
   sorting: SORTING_VALUES;
   authorizationStatus: AuthorizationStatus;
+  error: string | null;
 }
 
 const initialState: IState = {
@@ -43,6 +45,7 @@ const initialState: IState = {
   nearbyOffers: [],
   sorting: SORTING_VALUES.POPULAR,
   authorizationStatus: AuthorizationStatus.Unknown,
+  error: null,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -71,6 +74,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(setError, (state, action) => {
+      state.error = action.payload;
     });
 });
 
