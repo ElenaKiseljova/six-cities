@@ -1,17 +1,22 @@
-import {Link} from 'react-router-dom';
+import {Link, useMatch } from 'react-router-dom';
 
-import {useAppDispatch} from '../../hooks';
+import {AppRoute, AuthorizationStatus} from '../../const';
+
+import {useAppDispatch, useAppSelector} from '../../hooks';
 
 import {setCity} from '../../store/action';
-
-import {AppRoute} from '../../const';
-
-import {user} from '../../mocks/user';
+import {logoutAction} from '../../store/api-actions';
 
 function Header(): JSX.Element {
+  const isLoginPage = useMatch(AppRoute.Login);
+
   const dispatch = useAppDispatch();
 
-  const isLoggedIn = true;
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+
+  const logoutHandler = () => {
+    dispatch(logoutAction());
+  };
 
   return (
     <header className="header">
@@ -26,33 +31,37 @@ function Header(): JSX.Element {
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
             </Link>
           </div>
-          <nav className="header__nav">
-            <ul className="header__nav-list">
-              {isLoggedIn &&
-                <>
+          {!isLoginPage &&
+            <nav className="header__nav">
+              <ul className="header__nav-list">
+                {authorizationStatus === AuthorizationStatus.Auth &&
+                  <>
+                    <li className="header__nav-item user">
+                      <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
+                        <div className="header__avatar-wrapper user__avatar-wrapper">
+                        </div>
+                        <span className="header__user-name user__name">{'mail@mail.mail'}</span>
+                      </Link>
+                    </li>
+                    <li className="header__nav-item">
+                      <button
+                        className="header__nav-link button"
+                        onClick={logoutHandler}
+                      >
+                        <span className="header__signout">Sign out</span>
+                      </button>
+                    </li>
+                  </>}
+                {authorizationStatus !== AuthorizationStatus.Auth &&
                   <li className="header__nav-item user">
-                    <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
+                    <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Login}>
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
-                      <span className="header__user-name user__name">{user.email}</span>
+                      <span className="header__login">Sign in</span>
                     </Link>
-                  </li>
-                  <li className="header__nav-item">
-                    <a className="header__nav-link" href="#top">
-                      <span className="header__signout">Sign out</span>
-                    </a>
-                  </li>
-                </>}
-              {!isLoggedIn &&
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href={AppRoute.Login}>
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__login">Sign in</span>
-                  </a>
-                </li>}
-            </ul>
-          </nav>
+                  </li>}
+              </ul>
+            </nav>}
         </div>
       </div>
     </header>

@@ -1,19 +1,12 @@
 import {Helmet} from 'react-helmet-async';
 
-import { ICurUser } from '../../types/user';
-import { TPlaceCardByCity } from '../../types/offers';
+import { TPlaceCard, TPlaceCardByCity } from '../../types/offers';
 
 import Header from '../../components/header/header';
 import PlaceCard from '../../components/place-card/place-card';
 
-type TFavoritesPageProps = {
-  user: ICurUser;
-}
-
-function FavoritesPage(props: TFavoritesPageProps): JSX.Element {
-  const {user} = props;
-
-  const favoritesPlaceCards = user.favorites || [];
+function FavoritesPage(): JSX.Element {
+  const favoritesPlaceCards: TPlaceCard[] = [];
   const favoritesPlaceCardsByCity: TPlaceCardByCity = {};
 
   if (favoritesPlaceCards && Array.isArray(favoritesPlaceCards)) {
