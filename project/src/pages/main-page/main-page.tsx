@@ -1,7 +1,7 @@
 import { Navigate, useParams } from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
 
-import { AppRoute, SORTING_VALUES } from '../../const';
+import { AppRoute, SORTING_VALUES, CITIES } from '../../const';
 
 import { TPlaceCard } from '../../types/offers';
 import { TPoint } from '../../types/points';
@@ -48,7 +48,6 @@ function MainPage(props: TMainPageProps): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const cities = useAppSelector((state) => state.cities);
   const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => state.offers);
   const sortBy = useAppSelector((state) => state.sorting);
@@ -56,7 +55,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
   const {selectedPoint, onPlaceCardHoverHandler} = useSelectedPoint(points);
 
   // проверка на несуществующий город
-  const cityByRouteName = cities.find((c) => c.title === cityName);
+  const cityByRouteName = CITIES.find((c) => c.title === cityName);
   if (cityName && typeof cityByRouteName === 'undefined') {
     return <Navigate to={AppRoute.Root} replace />;
   }
@@ -81,7 +80,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
       <main className={`page__main page__main--index ${offersCount > 0 ? '' : 'page__main--index-empty'}`}>
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
-          <CitiesList cities={cities} curCity={cityName} />
+          <CitiesList cities={CITIES} curCity={cityName} />
         </div>
         <div className="cities">
           <div className={`cities__places-container container ${offersCount > 0 ? '' : 'cities__places-container--empty'}`}>

@@ -1,16 +1,12 @@
 import {Helmet} from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-import { AppRoute } from '../../const';
-
-import {useAppSelector} from '../../hooks';
+import { AppRoute, CITIES } from '../../const';
 
 import Header from '../../components/header/header';
 
 function LoginPage(): JSX.Element {
-  const cities = useAppSelector((store) => store.cities);
-
-  const getRandomCity = () => cities[Math.abs(Math.floor(Math.random() * cities.length) - 1)];
+  const getRandomCity = () => CITIES[Math.abs(Math.floor(Math.random() * CITIES.length) - 1)];
 
   const city = getRandomCity();
 

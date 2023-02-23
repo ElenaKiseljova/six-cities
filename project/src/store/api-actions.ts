@@ -6,11 +6,17 @@ import { TPlaceCard } from '../types/offers';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 
-import { APIRoute, AuthorizationStatus } from '../const';
+import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 
 import { saveToken, dropToken } from '../services/token';
 
-import { setOffers, requireAuthorization } from './action';
+import { setOffers, requireAuthorization, setError } from './action';
+
+import { store } from './';
+
+export const clearErrorAction = createAsyncThunk('server/clearError', () => {
+  setTimeout(() => store.dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
+});
 
 export const fetchOffersAction = createAsyncThunk<
   void,
