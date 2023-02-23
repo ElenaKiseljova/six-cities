@@ -39,10 +39,10 @@ const reducer = createReducer(initialState, (builder) => {
       }
     })
     .addCase(setOffers, (state, action) => {
-      state.offers = [...action.payload];
+      state.offers = action.payload;
     })
     .addCase(setNearbyOffers, (state, action) => {
-      state.nearbyOffers = [...action.payload];
+      state.nearbyOffers = action.payload;
     })
     .addCase(setSorting, (state, action) => {
       state.sorting = action.payload;
