@@ -1,6 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { offers, nearbyOffers } from '../mocks/offers';
 import { cities } from '../mocks/cities';
 
 import { SORTING_VALUES } from '../const';
@@ -40,10 +39,10 @@ const reducer = createReducer(initialState, (builder) => {
       }
     })
     .addCase(setOffers, (state, action) => {
-      state.offers = [...offers];
+      state.offers = [...action.payload];
     })
     .addCase(setNearbyOffers, (state, action) => {
-      state.nearbyOffers = [...nearbyOffers];
+      state.nearbyOffers = [...action.payload];
     })
     .addCase(setSorting, (state, action) => {
       state.sorting = action.payload;
