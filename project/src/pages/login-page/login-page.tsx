@@ -3,15 +3,13 @@ import { Link } from 'react-router-dom';
 
 import { AppRoute } from '../../const';
 
-import { TCity } from '../../types/city';
+import {useAppSelector} from '../../hooks';
 
 import Header from '../../components/header/header';
 
-type TLoginPageProps = {
-  cities: TCity[];
-}
+function LoginPage(): JSX.Element {
+  const cities = useAppSelector((store) => store.cities);
 
-function LoginPage({cities}: TLoginPageProps): JSX.Element {
   const getRandomCity = () => cities[Math.abs(Math.floor(Math.random() * cities.length) - 1)];
 
   const city = getRandomCity();

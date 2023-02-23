@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 
 import {user} from './mocks/user';
-import {cities} from './mocks/cities';
 import {offers, nearbyOffers} from './mocks/offers';
 import {reviews} from './mocks/reviews';
 import {points, nearbyPoints} from './mocks/points';
@@ -21,7 +20,6 @@ root.render(
     <Provider store={store}>
       <App
         user={user}
-        cities={cities}
         offers={offers}
         nearbyOffers={nearbyOffers}
         nearbyPoints={nearbyPoints}

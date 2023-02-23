@@ -22,3 +22,9 @@ export enum SORTING_VALUES {
   PRICE_HIGHT_TO_LOW = 'Price: high to low',
   RATE = 'Top rated first',
 }
+
+export enum APIRoute {
+  Hotels = ' /hotels',
+  Login = '/login',
+  Logout = '/logout',
+}

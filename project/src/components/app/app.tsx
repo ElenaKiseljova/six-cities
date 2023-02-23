@@ -4,7 +4,6 @@ import {HelmetProvider} from 'react-helmet-async';
 import { TPlaceCard } from '../../types/offers';
 import { TReviews } from '../../types/reviews';
 import { ICurUser } from '../../types/user';
-import { TCity } from '../../types/city';
 import { TPoint } from '../../types/points';
 
 import {AppRoute, AuthorizationStatus} from '../../const';
@@ -19,7 +18,6 @@ import NotFoundPage from '../../pages/not-found-page/not-found';
 
 type TAppProps = {
   user: ICurUser;
-  cities: TCity[];
   offers: TPlaceCard[];
   nearbyOffers: TPlaceCard[];
   nearbyPoints: TPoint[];
@@ -28,7 +26,7 @@ type TAppProps = {
 }
 
 function App(props: TAppProps): JSX.Element {
-  const {user, cities, offers, nearbyOffers, nearbyPoints, points, reviews} = props;
+  const {user, offers, nearbyOffers, nearbyPoints, points, reviews} = props;
 
   return (
     <>
@@ -44,7 +42,6 @@ function App(props: TAppProps): JSX.Element {
                 path={`${AppRoute.Root}:city`}
                 element={
                   <MainPage
-                    cities={cities}
                     points={points}
                   />
                 }
@@ -53,7 +50,6 @@ function App(props: TAppProps): JSX.Element {
                 path={''}
                 element={
                   <MainPage
-                    cities={cities}
                     points={points}
                   />
                 }
@@ -78,7 +74,7 @@ function App(props: TAppProps): JSX.Element {
             />
             <Route
               path={AppRoute.Login}
-              element={<LoginPage cities={cities} />}
+              element={<LoginPage />}
             />
             <Route
               path={AppRoute.Favorites}

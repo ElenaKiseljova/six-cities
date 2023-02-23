@@ -4,7 +4,6 @@ import {Helmet} from 'react-helmet-async';
 import { AppRoute, SORTING_VALUES } from '../../const';
 
 import { TPlaceCard } from '../../types/offers';
-import { TCity } from '../../types/city';
 import { TPoint } from '../../types/points';
 
 import {useAppSelector, useAppDispatch} from '../../hooks';
@@ -21,7 +20,6 @@ import Map from '../../components/map/map';
 import Sorting from '../../components/sorting/sorting';
 
 type TMainPageProps = {
-  cities: TCity[];
   points: TPoint[];
 }
 
@@ -42,7 +40,7 @@ const getSortedOffersBy = (arr: TPlaceCard[], by: SORTING_VALUES): TPlaceCard[] 
 };
 
 function MainPage(props: TMainPageProps): JSX.Element {
-  const { cities, points } = props;
+  const { points } = props;
 
   const SortingWrapped = withActiveFlag(Sorting);
 
@@ -50,6 +48,7 @@ function MainPage(props: TMainPageProps): JSX.Element {
 
   const dispatch = useAppDispatch();
 
+  const cities = useAppSelector((state) => state.cities);
   const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => state.offers);
   const sortBy = useAppSelector((state) => state.sorting);
