@@ -27,13 +27,9 @@ export const fetchOffersAction = createAsyncThunk<
     extra: AxiosInstance;
   }
 >('data/fetchOffers', async (_arg, { dispatch, extra: api }) => {
-  try {
-    const { data } = await api.get<TPlaceCard[]>(APIRoute.Hotels);
+  const { data } = await api.get<TPlaceCard[]>(APIRoute.Hotels);
 
-    dispatch(setOffers(data));
-  } catch (error) {
-    console.log(error);
-  }
+  dispatch(setOffers(data));
 });
 
 export const checkAuthAction = createAsyncThunk<
@@ -65,16 +61,12 @@ export const loginAction = createAsyncThunk<
 >(
   'user/login',
   async ({ login: email, password }, { dispatch, extra: api }) => {
-    try {
-      const {
-        data: { token },
-      } = await api.post<UserData>(APIRoute.Login, { email, password });
+    const {
+      data: { token },
+    } = await api.post<UserData>(APIRoute.Login, { email, password });
 
-      saveToken(token);
-      dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    } catch (error) {
-      console.log();
-    }
+    saveToken(token);
+    dispatch(requireAuthorization(AuthorizationStatus.Auth));
   }
 );
 
@@ -87,12 +79,8 @@ export const logoutAction = createAsyncThunk<
     extra: AxiosInstance;
   }
 >('user/logout', async (_arg, { dispatch, extra: api }) => {
-  try {
-    await api.delete(APIRoute.Logout);
+  await api.delete(APIRoute.Logout);
 
-    dropToken();
-    dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-  } catch (error) {
-    console.log(error);
-  }
+  dropToken();
+  dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
 });
