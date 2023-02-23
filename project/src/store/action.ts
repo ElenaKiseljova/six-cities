@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { SORTING_VALUES } from '../const';
+import { AuthorizationStatus, SORTING_VALUES } from '../const';
 
 import { TPlaceCard } from '../types/offers';
 
@@ -13,3 +13,7 @@ export const setNearbyOffers = createAction<TPlaceCard[]>(
 );
 
 export const setSorting = createAction<SORTING_VALUES>('sorting/setType');
+
+export const requireAuthorization = createAction<AuthorizationStatus>(
+  'user/requireAuthorization'
+);

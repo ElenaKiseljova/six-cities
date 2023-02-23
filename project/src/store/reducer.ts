@@ -2,18 +2,25 @@ import { createReducer } from '@reduxjs/toolkit';
 
 import { cities } from '../mocks/cities';
 
-import { SORTING_VALUES } from '../const';
+import { AuthorizationStatus, SORTING_VALUES } from '../const';
 
 import { TCity } from '../types/city';
 import { TPlaceCard } from '../types/offers';
 
-import { setCity, setOffers, setNearbyOffers, setSorting } from './action';
+import {
+  setCity,
+  setOffers,
+  setNearbyOffers,
+  setSorting,
+  requireAuthorization,
+} from './action';
 
 interface IState {
   city: TCity | undefined;
   offers: TPlaceCard[];
   nearbyOffers: TPlaceCard[];
   sorting: SORTING_VALUES;
+  authorizationStatus: AuthorizationStatus;
 }
 
 const initialState: IState = {
@@ -21,6 +28,7 @@ const initialState: IState = {
   offers: [],
   nearbyOffers: [],
   sorting: SORTING_VALUES.POPULAR,
+  authorizationStatus: AuthorizationStatus.Unknown,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -46,6 +54,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setSorting, (state, action) => {
       state.sorting = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
     });
 });
 
