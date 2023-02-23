@@ -19,13 +19,13 @@ function CitiesList({cities, curCity}: TCitiesListProps): JSX.Element {
     <section className="locations container">
       <ul className="locations__list tabs__list">
         {cities.map((c) => (
-          <li key={c.title} className="locations__item">
+          <li key={c.name} className="locations__item">
             <Link
-              className={`locations__item-link tabs__item ${c.title === curCity ? 'tabs__item--active' : ''}`}
-              to={`${AppRoute.Root}${c.title}`}
-              onClick={() => dispatch(setCity(c.title))}
+              className={`locations__item-link tabs__item ${c.name === curCity ? 'tabs__item--active' : ''}`}
+              to={`${AppRoute.Root}${c.name}`}
+              onClick={() => dispatch(setCity(c.name))}
             >
-              <span>{c.title}</span>
+              <span>{c.name}</span>
             </Link>
           </li>
         ))}

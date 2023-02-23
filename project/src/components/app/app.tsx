@@ -1,11 +1,6 @@
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
 
-import { TPlaceCard } from '../../types/offers';
-import { TReviews } from '../../types/reviews';
-import { ICurUser } from '../../types/user';
-import { TPoint } from '../../types/points';
-
 import {AppRoute, AuthorizationStatus} from '../../const';
 
 import {useAppSelector} from '../../hooks';
@@ -19,18 +14,7 @@ import PropertyPage from '../../pages/property-page/property-page';
 import NotFoundPage from '../../pages/not-found-page/not-found';
 import LoadingPage from '../../pages/loading-page/loading-page';
 
-type TAppProps = {
-  user: ICurUser;
-  offers: TPlaceCard[];
-  nearbyOffers: TPlaceCard[];
-  nearbyPoints: TPoint[];
-  points: TPoint[];
-  reviews: TReviews;
-}
-
-function App(props: TAppProps): JSX.Element {
-  const {user, offers, nearbyOffers, nearbyPoints, points, reviews} = props;
-
+function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
 
@@ -53,17 +37,13 @@ function App(props: TAppProps): JSX.Element {
               <Route
                 path={`${AppRoute.Root}:city`}
                 element={
-                  <MainPage
-                    points={points}
-                  />
+                  <MainPage />
                 }
               />
               <Route
                 path={''}
                 element={
-                  <MainPage
-                    points={points}
-                  />
+                  <MainPage />
                 }
               />
             </Route>
@@ -71,13 +51,6 @@ function App(props: TAppProps): JSX.Element {
               path={`${AppRoute.Property}/:id`}
               element={
                 <PropertyPage
-                  user={user}
-                  offers={offers}
-                  points={points}
-                  nearbyOffers={nearbyOffers}
-                  nearbyPoints={nearbyPoints}
-                  reviews={reviews}
-                  isLoggedIn
                   onSendReview={() => {
                     throw new Error('Function \'onSendReview\' isn\'t implemented.');
                   }}
@@ -86,17 +59,17 @@ function App(props: TAppProps): JSX.Element {
             />
             <Route
               path={AppRoute.Login}
-              element={<LoginPage />}
+              element={
+                <LoginPage />
+              }
             />
             <Route
               path={AppRoute.Favorites}
               element={
                 <PrivateRoute
-                  authorizationStatus={AuthorizationStatus.Auth}
+                  authorizationStatus={authorizationStatus}
                 >
-                  <FvoritesPage
-                    user={user}
-                  />
+                  <FvoritesPage />
                 </PrivateRoute>
               }
             />

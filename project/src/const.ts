@@ -3,17 +3,54 @@ import { TCity } from './types/city';
 export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const CITIES: TCity[] = [
-  { title: 'Amsterdam', lat: 52.321, lng: 4.878, zoom: 10 },
-  { title: 'Paris', lat: 48.805, lng: 2.351, zoom: 10 },
-  { title: 'Cologne', lat: 50.9341, lng: 6.9605, zoom: 10 },
-  { title: 'Brussels', lat: 50.855103, lng: 4.3053775, zoom: 10 },
   {
-    title: 'Hamburg',
-    lat: 53.58495986131881,
-    lng: 9.994421266529852,
-    zoom: 10,
+    name: 'Amsterdam',
+    location: {
+      latitude: 52.321,
+      longitude: 4.878,
+      zoom: 10,
+    },
   },
-  { title: 'Dusseldorf', lat: 51.2383711, lng: 6.6742673, zoom: 10 },
+  {
+    name: 'Paris',
+    location: {
+      latitude: 48.805,
+      longitude: 2.351,
+      zoom: 10,
+    },
+  },
+  {
+    name: 'Cologne',
+    location: {
+      latitude: 50.9341,
+      longitude: 6.9605,
+      zoom: 10,
+    },
+  },
+  {
+    name: 'Brussels',
+    location: {
+      latitude: 50.855103,
+      longitude: 4.3053775,
+      zoom: 10,
+    },
+  },
+  {
+    name: 'Hamburg',
+    location: {
+      latitude: 53.58495986131881,
+      longitude: 9.994421266529852,
+      zoom: 10,
+    },
+  },
+  {
+    name: 'Dusseldorf',
+    location: {
+      latitude: 51.2383711,
+      longitude: 6.6742673,
+      zoom: 10,
+    },
+  },
 ];
 
 export enum AppRoute {

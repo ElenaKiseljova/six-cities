@@ -6,9 +6,7 @@ import { store } from './store';
 import {checkAuthAction, fetchOffersAction} from './store/api-actions';
 
 import {user} from './mocks/user';
-import {offers, nearbyOffers} from './mocks/offers';
 import {reviews} from './mocks/reviews';
-import {points, nearbyPoints} from './mocks/points';
 
 import App from './components/app/app';
 import ErrorMessage from './components/error-message/error-message';
@@ -24,14 +22,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <ErrorMessage />
-      <App
-        user={user}
-        offers={offers}
-        nearbyOffers={nearbyOffers}
-        nearbyPoints={nearbyPoints}
-        points={points}
-        reviews={reviews}
-      />
+      <App />
     </Provider>
   </React.StrictMode>,
 );

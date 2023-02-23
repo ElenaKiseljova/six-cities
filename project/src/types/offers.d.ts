@@ -1,23 +1,26 @@
-import { TReview } from './reviews';
 import { THost } from './host';
 import { TCity } from './city';
+import { TLocation } from './location';
+
+type TPlaceCardTypes = 'apartment' | 'room' | 'house' | 'hotel';
 
 export type TPlaceCard = {
-  id: string;
+  id: number;
   isPremium: boolean;
-  cardImg: string;
-  imgs: string[];
+  previewImage: string;
+  images: string[];
   price: number;
   rating: number;
   title: string;
-  type: 'Private room' | 'Apartment';
-  inFavorites: boolean;
+  type: TPlaceCardTypes;
+  isFavorite: boolean;
   city: TCity;
-  reviews: TReview[];
   bedrooms: number;
-  adults: number;
-  features: string[];
+  maxAdults: number;
+  goods: string[];
   host: THost;
+  description: string[] | string;
+  location: TLocation;
 };
 
 export type TPlaceCardByCity = {

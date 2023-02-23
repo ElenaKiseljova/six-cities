@@ -4,10 +4,9 @@ import {Helmet} from 'react-helmet-async';
 import { AppRoute, SORTING_VALUES, CITIES } from '../../const';
 
 import { TPlaceCard } from '../../types/offers';
-import { TPoint } from '../../types/points';
 
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import useSelectedPoint from '../../hooks/useSelectedPoint';
+import useSelectedPlaceCard from '../../hooks/useSelectedPlaceCard';
 
 import {setCity} from '../../store/action';
 
@@ -19,29 +18,23 @@ import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Map from '../../components/map/map';
 import Sorting from '../../components/sorting/sorting';
 
-type TMainPageProps = {
-  points: TPoint[];
-}
-
 const getSortedOffersBy = (arr: TPlaceCard[], by: SORTING_VALUES): TPlaceCard[] => {
   switch (by) {
     case SORTING_VALUES.RATE:
-      return arr.sort((a, b) => b.rating - a.rating);
+      return [...arr].sort((a, b) => b.rating - a.rating);
 
     case SORTING_VALUES.PRICE_LOW_TO_HIGHT:
-      return arr.sort((a, b) => a.price - b.price);
+      return [...arr].sort((a, b) => a.price - b.price);
 
     case SORTING_VALUES.PRICE_HIGHT_TO_LOW:
-      return arr.sort((a, b) => b.price - a.price);
+      return [...arr].sort((a, b) => b.price - a.price);
 
     default:
       return [...arr];
   }
 };
 
-function MainPage(props: TMainPageProps): JSX.Element {
-  const { points } = props;
-
+function MainPage(): JSX.Element {
   const SortingWrapped = withActiveFlag(Sorting);
 
   const {city: cityName} = useParams();
@@ -52,23 +45,22 @@ function MainPage(props: TMainPageProps): JSX.Element {
   const offers = useAppSelector((state) => state.offers);
   const sortBy = useAppSelector((state) => state.sorting);
 
-  const {selectedPoint, onPlaceCardHoverHandler} = useSelectedPoint(points);
-
-  // проверка на несуществующий город
-  const cityByRouteName = CITIES.find((c) => c.title === cityName);
-  if (cityName && typeof cityByRouteName === 'undefined') {
-    return <Navigate to={AppRoute.Root} replace />;
-  }
-
-  if (cityName && city?.title !== cityName) {
+  if (cityName && city?.name !== cityName) {
     dispatch(setCity(cityName));
   }
 
-  const offersInCity = cityName ? offers.filter((offer) => offer.city.title === cityName) : offers;
+  const offersInCity = cityName ? offers.filter((offer) => offer.city.name === cityName) : offers;
   const offersInCitySorting = getSortedOffersBy(offersInCity, sortBy);
-  const pointsInCity = cityName ? points.filter((point) => point.city.title === cityName) : points;
 
   const offersCount = offersInCity.length;
+
+  const {selectedPlaceCard, onPlaceCardHoverHandler} = useSelectedPlaceCard(offersInCity);
+
+  // проверка на несуществующий город
+  const cityByRouteName = CITIES.find((c) => c.name === cityName);
+  if (cityName && typeof cityByRouteName === 'undefined') {
+    return <Navigate to={AppRoute.Root} replace />;
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -111,9 +103,8 @@ function MainPage(props: TMainPageProps): JSX.Element {
               {offersCount > 0 &&
                 <Map
                   city={city}
-                  points={pointsInCity}
                   offers={offersInCity}
-                  selectedPoint={selectedPoint}
+                  selectedPlaceCard={selectedPlaceCard}
                 />}
             </div>
           </div>

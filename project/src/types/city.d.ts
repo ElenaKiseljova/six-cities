@@ -1,6 +1,6 @@
+import { TLocation } from './location';
+
 export type TCity = {
-  title: string;
-  lat: number;
-  lng: number;
-  zoom: number;
+  name: string;
+  location: TLocation;
 };

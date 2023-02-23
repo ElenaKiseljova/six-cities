@@ -35,8 +35,8 @@ function LoginPage(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link className="locations__item-link" to={`${AppRoute.Root}${city.title}`}>
-                <span>{city.title}</span>
+              <Link className="locations__item-link" to={`${AppRoute.Root}${city.name}`}>
+                <span>{city.name}</span>
               </Link>
             </div>
           </section>

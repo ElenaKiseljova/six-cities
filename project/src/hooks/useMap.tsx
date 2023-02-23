@@ -17,15 +17,17 @@ function useMap(
       return;
     }
 
+    const {location} = city;
+
     if (!isInitedMap.current) {
       isInitedMap.current = true;
 
       instanceMap.current = new Map(mapRef.current, {
         center: {
-          lat: city.lat,
-          lng: city.lng
+          lat: location.latitude,
+          lng: location.longitude
         },
-        zoom: city.zoom
+        zoom: location.zoom
       });
 
       const layer = new TileLayer(
@@ -40,11 +42,11 @@ function useMap(
 
       setMap(instanceMap.current);
     } else if (isInitedMap.current && map) {
-      const center = new LatLng(city.lat, city.lng);
+      const center = new LatLng(location.latitude, location.longitude);
 
       // instanceMap.current?.setView(center, city.zoom);
       // instanceMap.current?.panTo(center, {animate: true});
-      instanceMap.current?.flyTo(center, city.zoom, {animate: true});
+      instanceMap.current?.flyTo(center, location.zoom, {animate: true});
     }
   }, [mapRef, map, city]);
 

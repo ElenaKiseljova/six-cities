@@ -5,7 +5,6 @@ import useMap from '../../hooks/useMap';
 
 import {URL_MARKER} from '../../const';
 
-import { TPoint } from '../../types/points';
 import { TCity } from '../../types/city';
 import { TPlaceCard } from '../../types/offers';
 
@@ -13,9 +12,8 @@ import 'leaflet/dist/leaflet.css';
 
 type TMapProps = {
   city: TCity | undefined;
-  points: TPoint[];
   offers: TPlaceCard[];
-  selectedPoint: TPoint | undefined;
+  selectedPlaceCard: TPlaceCard | undefined;
   classList?: string;
 }
 
@@ -32,14 +30,16 @@ const currentCustomIcon = new Icon({
 });
 
 function Map (props: TMapProps): JSX.Element {
-  const {city, points, offers, selectedPoint, classList} = props;
+  const {city, offers, selectedPlaceCard, classList} = props;
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, city || {
-    lat: 52.38249006767424,
-    lng: 4.891808097764281,
-    zoom: 5,
-    title: 'all'
+    location: {
+      latitude: 52.38249006767424,
+      longitude: 4.891808097764281,
+      zoom: 5,
+    },
+    name: 'all'
   });
 
   const markers = useRef<{[cityTitle: string]: Marker[]}>({});
@@ -47,48 +47,51 @@ function Map (props: TMapProps): JSX.Element {
   useEffect(() => {
     if (map) {
       // Создание новых маркеров
-      points.forEach((point) => {
-        const marker = new Marker({
-          lat: point.lat,
-          lng: point.lng,
-        },
-        {
-          title: point.title,
-        });
+      offers.forEach((offer) => {
+        const {location: point} = offer;
+
+        const marker = new Marker(
+          {
+            lat: point.latitude,
+            lng: point.longitude,
+          },
+          {
+            title: offer.title,
+          }
+        );
 
         // Добавление новых маркеров в объект
-        markers.current[city?.title || 'all'] ?
-          markers.current[city?.title || 'all'].push(marker) :
-          markers.current[city?.title || 'all'] = [marker];
+        markers.current[city?.name || 'all'] ?
+          markers.current[city?.name || 'all'].push(marker) :
+          markers.current[city?.name || 'all'] = [marker];
 
         // Шаблон попапа маркера
-        const pointOffer = offers.find((o) => o.title === point.title);
-        if (pointOffer) {
-          const popupTemplate = `
-            <img src="${pointOffer.cardImg}" />
-            <h4>${pointOffer.title}</h4>
-            <a href="/offer/${pointOffer.id}">Go To The Offer</a>
+        const popupTemplate = `
+            <img src="${offer.previewImage}" />
+            <h4>${offer.title}</h4>
+            <a href="/offer/${offer.id}">Go To The Offer</a>
           `;
-          marker.bindPopup(popupTemplate);
-        }
+        marker.bindPopup(popupTemplate);
 
         // Добавление маркера на карту
         marker
           .setIcon(
-            selectedPoint !== undefined && point.title === selectedPoint.title
+            selectedPlaceCard !== undefined &&
+            point.latitude === selectedPlaceCard.location.latitude &&
+            point.longitude === selectedPlaceCard.location.longitude
               ? currentCustomIcon
               : defaultCustomIcon
           )
           .addTo(map);
       });
     }
-  }, [map, points, offers, city, selectedPoint]);
+  }, [map, offers, city, selectedPlaceCard]);
 
   useEffect(() => {
     // Проверка наличия отрисованных маркеров других городов
     if (Object.keys(markers.current).length) {
       for (const [c, m] of Object.entries(markers.current)) {
-        if (c !== (city?.title || 'all')) {
+        if (c !== (city?.name || 'all')) {
           // Удаление слоёв маркеров
           m.forEach((mark) => mark.remove());
 

@@ -1,8 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { cities } from '../mocks/cities';
-
-import { AuthorizationStatus, SORTING_VALUES } from '../const';
+import { AuthorizationStatus, SORTING_VALUES, CITIES } from '../const';
 
 import { TCity } from '../types/city';
 import { TPlaceCard } from '../types/offers';
@@ -42,9 +40,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setCity, (state, action) => {
       const cityName = action.payload;
 
-      if (state.city?.title !== cityName) {
+      if (state.city?.name !== cityName) {
         if (typeof cityName === 'string') {
-          const city = cities.find((c) => c.title === action.payload);
+          const city = CITIES.find((c) => c.name === action.payload);
 
           state.city = city ? { ...city } : undefined;
         } else {

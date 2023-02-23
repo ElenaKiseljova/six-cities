@@ -17,9 +17,9 @@ type TPlaceCardProps = {
 
 function PlaceCard(props: TPlaceCardProps): JSX.Element {
   const {data, sectionName, onHover} = props;
-  const {id, isPremium, cardImg, price, title, rating, inFavorites, type} = data;
+  const {id, isPremium, previewImage, price, title, rating, isFavorite, type} = data;
 
-  const BookmarkWrapped = withActiveFlag(Bookmark, inFavorites);
+  const BookmarkWrapped = withActiveFlag(Bookmark, isFavorite);
 
   const placeCardMouseEnterHandler = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
@@ -45,7 +45,7 @@ function PlaceCard(props: TPlaceCardProps): JSX.Element {
         </div>}
       <div className={`place-card__image-wrapper ${sectionName ? `${sectionName}__image-wrapper` : ''}`}>
         <Link to={`${AppRoute.Property}/${id}`}>
-          <img className="place-card__image" src={cardImg} width="260" height="200" alt="apartment" />
+          <img className="place-card__image" src={previewImage} width="260" height="200" alt="apartment" />
         </Link>
       </div>
       <div className={`place-card__info ${sectionName ? `${sectionName}__place-card-info` : ''}`}>
@@ -59,7 +59,7 @@ function PlaceCard(props: TPlaceCardProps): JSX.Element {
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">
-            <span style={{width: `${rating}%`}}></span>
+            <span style={{width: `${(rating / 5) * 100}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
