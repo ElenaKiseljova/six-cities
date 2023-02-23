@@ -14,6 +14,7 @@ import {
   setSorting,
   requireAuthorization,
   setError,
+  setOffersDataLoadingStatus,
 } from './action';
 
 interface IState {
@@ -23,6 +24,7 @@ interface IState {
   sorting: SORTING_VALUES;
   authorizationStatus: AuthorizationStatus;
   error: string | null;
+  isOffersDataLoading: boolean;
 }
 
 const initialState: IState = {
@@ -32,6 +34,7 @@ const initialState: IState = {
   sorting: SORTING_VALUES.POPULAR,
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
+  isOffersDataLoading: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -63,6 +66,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(setOffersDataLoadingStatus, (state, action) => {
+      state.isOffersDataLoading = action.payload;
     });
 });
 

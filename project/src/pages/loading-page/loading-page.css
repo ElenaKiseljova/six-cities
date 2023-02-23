@@ -1,0 +1,17 @@
+.loading-page {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+}
+
+.loading-page svg {
+  max-width: 30%;
+  height: auto;
+
+  margin-bottom: 30px;
+}

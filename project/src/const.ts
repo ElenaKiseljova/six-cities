@@ -42,7 +42,7 @@ export enum SORTING_VALUES {
 }
 
 export enum APIRoute {
-  Hotels = ' /hotels',
+  Hotels = '/hotels',
   Login = '/login',
   Logout = '/logout',
 }

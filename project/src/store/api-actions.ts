@@ -10,7 +10,12 @@ import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 
 import { saveToken, dropToken } from '../services/token';
 
-import { setOffers, requireAuthorization, setError } from './action';
+import {
+  setOffers,
+  requireAuthorization,
+  setError,
+  setOffersDataLoadingStatus,
+} from './action';
 
 import { store } from './';
 
@@ -27,7 +32,11 @@ export const fetchOffersAction = createAsyncThunk<
     extra: AxiosInstance;
   }
 >('data/fetchOffers', async (_arg, { dispatch, extra: api }) => {
+  dispatch(setOffersDataLoadingStatus(true));
+
   const { data } = await api.get<TPlaceCard[]>(APIRoute.Hotels);
+
+  dispatch(setOffersDataLoadingStatus(false));
 
   dispatch(setOffers(data));
 });

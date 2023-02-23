@@ -8,6 +8,8 @@ import { TPoint } from '../../types/points';
 
 import {AppRoute, AuthorizationStatus} from '../../const';
 
+import {useAppSelector} from '../../hooks';
+
 import PrivateRoute from '../private-route/private-route';
 
 import MainPage from '../../pages/main-page/main-page';
@@ -15,6 +17,7 @@ import FvoritesPage from '../../pages/favorites-page/favorites-page';
 import LoginPage from '../../pages/login-page/login-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import NotFoundPage from '../../pages/not-found-page/not-found';
+import LoadingPage from '../../pages/loading-page/loading-page';
 
 type TAppProps = {
   user: ICurUser;
@@ -27,6 +30,15 @@ type TAppProps = {
 
 function App(props: TAppProps): JSX.Element {
   const {user, offers, nearbyOffers, nearbyPoints, points, reviews} = props;
+
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
+    return (
+      <LoadingPage />
+    );
+  }
 
   return (
     <>
