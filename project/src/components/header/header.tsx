@@ -2,6 +2,8 @@ import {Link, useMatch } from 'react-router-dom';
 
 import {AppRoute, AuthorizationStatus} from '../../const';
 
+import { getUserData } from '../../services/user';
+
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
 import {setCity} from '../../store/action';
@@ -13,6 +15,9 @@ function Header(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+
+  const userEmail = getUserData('email');
+  const userAvatar = getUserData('avatarUrl');
 
   const logoutHandler = () => {
     dispatch(logoutAction());
@@ -38,9 +43,12 @@ function Header(): JSX.Element {
                   <>
                     <li className="header__nav-item user">
                       <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
-                        <div className="header__avatar-wrapper user__avatar-wrapper">
+                        <div
+                          className="header__avatar-wrapper user__avatar-wrapper"
+                          style={{backgroundImage: `url(${userAvatar as string})`, borderRadius: '50%'}}
+                        >
                         </div>
-                        <span className="header__user-name user__name">{'mail@mail.mail'}</span>
+                        <span className="header__user-name user__name">{userEmail}</span>
                       </Link>
                     </li>
                     <li className="header__nav-item">

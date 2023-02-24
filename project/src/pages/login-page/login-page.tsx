@@ -4,7 +4,7 @@ import { Link, Navigate } from 'react-router-dom';
 
 import { AuthorizationStatus, AppRoute, CITIES } from '../../const';
 
-import {AuthData} from '../../types/auth-data';
+import {TAuthData} from '../../types/auth-data';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
 
@@ -60,7 +60,7 @@ function LoginPage(): JSX.Element {
 
   const city = getRandomCity();
 
-  const onSubmit = (authData: AuthData) => {
+  const onSubmit = (authData: TAuthData) => {
     dispatch(loginAction(authData));
   };
 
@@ -118,7 +118,13 @@ function LoginPage(): JSX.Element {
                   ref={passwordRef}
                 />
               </div>
-              <button className="login__submit form__submit button" type="submit">Sign in</button>
+              <button
+                title='Enter something in the fields "Login" and "Password" to enter the site'
+                className="login__submit form__submit button"
+                type="submit"
+              >
+                Sign in
+              </button>
             </form>
           </section>
           <section className="locations locations--login locations--current">

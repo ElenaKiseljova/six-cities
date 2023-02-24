@@ -3,12 +3,12 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AppDispatch, State } from '../types/state';
 import { TPlaceCard } from '../types/offers';
-import { AuthData } from '../types/auth-data';
-import { UserData } from '../types/user-data';
+import { TAuthData } from '../types/auth-data';
+import { TUserData } from '../types/user-data';
 
 import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
 
-import { saveToken, dropToken } from '../services/token';
+import { saveUserData, dropUserData } from '../services/user';
 
 import {
   setOffers,
@@ -61,7 +61,7 @@ export const checkAuthAction = createAsyncThunk<
 
 export const loginAction = createAsyncThunk<
   void,
-  AuthData,
+  TAuthData,
   {
     dispatch: AppDispatch;
     state: State;
@@ -70,11 +70,12 @@ export const loginAction = createAsyncThunk<
 >(
   'user/login',
   async ({ login: email, password }, { dispatch, extra: api }) => {
-    const {
-      data: { token },
-    } = await api.post<UserData>(APIRoute.Login, { email, password });
+    const { data } = await api.post<TUserData>(APIRoute.Login, {
+      email,
+      password,
+    });
 
-    saveToken(token);
+    saveUserData(data);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
   }
 );
@@ -90,6 +91,6 @@ export const logoutAction = createAsyncThunk<
 >('user/logout', async (_arg, { dispatch, extra: api }) => {
   await api.delete(APIRoute.Logout);
 
-  dropToken();
+  dropUserData();
   dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
 });

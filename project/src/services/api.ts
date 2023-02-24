@@ -6,7 +6,7 @@ import axios, {
 } from 'axios';
 import { StatusCodes } from 'http-status-codes';
 
-import { getToken } from './token';
+import { getUserData } from './user';
 
 import { processErrorHandle } from './process-error-handle';
 
@@ -29,7 +29,7 @@ export const createAPI = (): AxiosInstance => {
   });
 
   api.interceptors.request.use((config: AxiosRequestConfig) => {
-    const token = getToken();
+    const token = getUserData('token');
 
     if (token && config.headers) {
       config.headers['x-token'] = token;
