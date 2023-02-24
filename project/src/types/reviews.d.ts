@@ -1,13 +1,11 @@
-import { IReviewUser } from './user';
+import { TUserData } from './user-data';
 
 export type TReview = {
-  id: string | number;
-  user: IReviewUser;
+  id: number;
   rating: number;
-  text: string;
+  comment: string;
   date: string;
+  user: TUserData;
 };
 
-export type TReviews = {
-  [offerId: string]: TReview[];
-};
+export type TReviewPost = Pick<TReview, 'rating', 'comment'>;

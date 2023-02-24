@@ -7,6 +7,11 @@ import { TPlaceCard } from '../../types/offers';
 
 import withActiveFlag from '../../hocs/with-active-flag';
 
+import {useAppDispatch} from '../../hooks';
+import {fetchOfferAction} from '../../store/api-actions';
+
+import { adapterOfferType } from '../../services/adapter-offer-type';
+
 import Bookmark from '../bookmark/bookmark';
 
 type TPlaceCardProps = {
@@ -18,6 +23,8 @@ type TPlaceCardProps = {
 function PlaceCard(props: TPlaceCardProps): JSX.Element {
   const {data, sectionName, onHover} = props;
   const {id, isPremium, previewImage, price, title, rating, isFavorite, type} = data;
+
+  const dispatch = useAppDispatch();
 
   const BookmarkWrapped = withActiveFlag(Bookmark, isFavorite);
 
@@ -33,6 +40,10 @@ function PlaceCard(props: TPlaceCardProps): JSX.Element {
     return typeof onHover === 'function' ? onHover(undefined) : false;
   };
 
+  const goToThePropertyPage = () => {
+    dispatch(fetchOfferAction(id));
+  };
+
   return (
     <article
       className={`place-card ${sectionName ? `${sectionName}__place-card` : ''}`}
@@ -44,7 +55,10 @@ function PlaceCard(props: TPlaceCardProps): JSX.Element {
           <span>Premium</span>
         </div>}
       <div className={`place-card__image-wrapper ${sectionName ? `${sectionName}__image-wrapper` : ''}`}>
-        <Link to={`${AppRoute.Property}/${id}`}>
+        <Link
+          to={`${AppRoute.Property}/${id}`}
+          onClick={goToThePropertyPage}
+        >
           <img className="place-card__image" src={previewImage} width="260" height="200" alt="apartment" />
         </Link>
       </div>
@@ -64,9 +78,14 @@ function PlaceCard(props: TPlaceCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`${AppRoute.Property}/${id}`}>{title}</Link>
+          <Link
+            to={`${AppRoute.Property}/${id}`}
+            onClick={goToThePropertyPage}
+          >
+            {title}
+          </Link>
         </h2>
-        <p className="place-card__type">{type}</p>
+        <p className="place-card__type">{adapterOfferType(type)}</p>
       </div>
     </article>
   );

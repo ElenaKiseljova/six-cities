@@ -1,60 +1,59 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { AuthorizationStatus, SORTING_VALUES, CITIES } from '../const';
+import { AuthorizationStatus, SORTING_VALUES } from '../const';
 
-import { TCity } from '../types/city';
 import { TPlaceCard } from '../types/offers';
+import { TReview } from '../types/reviews';
 
 import {
-  setCity,
   setOffers,
-  setNearbyOffers,
   setSorting,
   requireAuthorization,
+  setFavorites,
   setError,
-  setOffersDataLoadingStatus,
+  setDataLoadingStatus,
+  setOffer,
+  setNearbyOffers,
+  setComments,
 } from './action';
 
 interface IState {
-  city: TCity | undefined;
   offers: TPlaceCard[];
+  offer: TPlaceCard | null;
   nearbyOffers: TPlaceCard[];
+  comments: TReview[];
   sorting: SORTING_VALUES;
   authorizationStatus: AuthorizationStatus;
+  favorites: TPlaceCard[];
   error: string | null;
   isOffersDataLoading: boolean;
 }
 
 const initialState: IState = {
-  city: undefined,
   offers: [],
+  offer: null,
   nearbyOffers: [],
+  comments: [],
   sorting: SORTING_VALUES.POPULAR,
   authorizationStatus: AuthorizationStatus.Unknown,
+  favorites: [],
   error: null,
   isOffersDataLoading: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(setCity, (state, action) => {
-      const cityName = action.payload;
-
-      if (state.city?.name !== cityName) {
-        if (typeof cityName === 'string') {
-          const city = CITIES.find((c) => c.name === action.payload);
-
-          state.city = city ? { ...city } : undefined;
-        } else {
-          state.city = cityName;
-        }
-      }
-    })
     .addCase(setOffers, (state, action) => {
       state.offers = action.payload;
     })
+    .addCase(setOffer, (state, action) => {
+      state.offer = action.payload;
+    })
     .addCase(setNearbyOffers, (state, action) => {
       state.nearbyOffers = action.payload;
+    })
+    .addCase(setComments, (state, action) => {
+      state.comments = action.payload;
     })
     .addCase(setSorting, (state, action) => {
       state.sorting = action.payload;
@@ -62,10 +61,13 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
+    .addCase(setFavorites, (state, action) => {
+      state.favorites = action.payload;
+    })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
     })
-    .addCase(setOffersDataLoadingStatus, (state, action) => {
+    .addCase(setDataLoadingStatus, (state, action) => {
       state.isOffersDataLoading = action.payload;
     });
 });

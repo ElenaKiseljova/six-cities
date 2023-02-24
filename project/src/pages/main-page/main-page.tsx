@@ -5,10 +5,8 @@ import { AppRoute, SORTING_VALUES, CITIES } from '../../const';
 
 import { TPlaceCard } from '../../types/offers';
 
-import {useAppSelector, useAppDispatch} from '../../hooks';
+import {useAppSelector} from '../../hooks';
 import useSelectedPlaceCard from '../../hooks/useSelectedPlaceCard';
-
-import {setCity} from '../../store/action';
 
 import withActiveFlag from '../../hocs/with-active-flag';
 
@@ -39,15 +37,8 @@ function MainPage(): JSX.Element {
 
   const {city: cityName} = useParams();
 
-  const dispatch = useAppDispatch();
-
-  const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => state.offers);
   const sortBy = useAppSelector((state) => state.sorting);
-
-  if (cityName && city?.name !== cityName) {
-    dispatch(setCity(cityName));
-  }
 
   const offersInCity = cityName ? offers.filter((offer) => offer.city.name === cityName) : offers;
   const offersInCitySorting = getSortedOffersBy(offersInCity, sortBy);
@@ -56,9 +47,9 @@ function MainPage(): JSX.Element {
 
   const {selectedPlaceCard, onPlaceCardHoverHandler} = useSelectedPlaceCard(offersInCity);
 
-  // проверка на несуществующий город
-  const cityByRouteName = CITIES.find((c) => c.name === cityName);
-  if (cityName && typeof cityByRouteName === 'undefined') {
+  // Проверка на несуществующий город
+  const city = CITIES.find((c) => c.name === cityName);
+  if (cityName && typeof city === 'undefined') {
     return <Navigate to={AppRoute.Root} replace />;
   }
 

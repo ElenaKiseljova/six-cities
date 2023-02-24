@@ -2,7 +2,7 @@ import { THost } from './host';
 import { TCity } from './city';
 import { TLocation } from './location';
 
-type TPlaceCardTypes = 'apartment' | 'room' | 'house' | 'hotel';
+export type TPlaceCardTypes = 'apartment' | 'room' | 'house' | 'hotel';
 
 export type TPlaceCard = {
   id: number;

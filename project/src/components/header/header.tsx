@@ -6,7 +6,6 @@ import { getUserData } from '../../services/user';
 
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
-import {setCity} from '../../store/action';
 import {logoutAction} from '../../store/api-actions';
 
 function Header(): JSX.Element {
@@ -31,7 +30,6 @@ function Header(): JSX.Element {
             <Link
               className="header__logo-link header__logo-link--active"
               to={AppRoute.Root}
-              onClick={() => dispatch(setCity(undefined))}
             >
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
             </Link>

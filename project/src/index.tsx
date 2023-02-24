@@ -5,9 +5,6 @@ import { Provider } from 'react-redux';
 import { store } from './store';
 import {checkAuthAction, fetchOffersAction} from './store/api-actions';
 
-import {user} from './mocks/user';
-import {reviews} from './mocks/reviews';
-
 import App from './components/app/app';
 import ErrorMessage from './components/error-message/error-message';
 

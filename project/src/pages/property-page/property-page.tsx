@@ -1,5 +1,4 @@
 import {Helmet} from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
 
 import { AuthorizationStatus } from '../../const';
 
@@ -23,16 +22,13 @@ type TPropertyPageProps = {
 function PropertyPage(props: TPropertyPageProps): JSX.Element {
   const {onSendReview} = props;
 
-  const {id} = useParams();
-
-  const offers = useAppSelector((state) => state.offers);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-
-  const property = offers.find((offer) => offer.id.toString() === id);
-  const propertyReviews: TReview[] = [];
+  const property = useAppSelector((state) => state.offer);
+  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
 
   const BookmarkWrapped = withActiveFlag(Bookmark, property ? property.isFavorite : false);
 
+  const propertyReviews: TReview[] = [];
   const nearbyOffersWithProperty = property ? [property] : [];
 
   return (
@@ -137,7 +133,6 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
 
                     {authorizationStatus === AuthorizationStatus.Auth &&
                       <ReviewForm
-                        user={user}
                         onSendReview={onSendReview}
                       />}
                   </section>
