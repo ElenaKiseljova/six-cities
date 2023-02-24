@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AppDispatch, State } from '../types/state';
 import { TPlaceCard } from '../types/offers';
-import { TReview } from '../types/reviews';
+import { TReview, TReviewPost } from '../types/reviews';
 import { TAuthData } from '../types/auth-data';
 import { TUserData } from '../types/user-data';
 
@@ -98,6 +98,25 @@ export const fetchCommentsAction = createAsyncThunk<
   const { data } = await api.get<TReview[]>(`${APIRoute.Reviews}/${id}`);
 
   dispatch(setDataLoadingStatus(false));
+
+  dispatch(setComments(data));
+});
+
+export const sendCommentAction = createAsyncThunk<
+  void,
+  {
+    id: number;
+    review: TReviewPost;
+  },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/sendComment', async ({ id, review }, { dispatch, extra: api }) => {
+  const { data } = await api.post<TReview[]>(`${APIRoute.Reviews}/${id}`, {
+    ...review,
+  });
 
   dispatch(setComments(data));
 });

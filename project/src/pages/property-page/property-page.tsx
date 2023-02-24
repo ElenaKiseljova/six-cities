@@ -1,12 +1,17 @@
+import { Fragment, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
 
 import { AuthorizationStatus } from '../../const';
 
-import { TReview } from '../../types/reviews';
+import { TReviewPost } from '../../types/reviews';
 
 import withActiveFlag from '../../hocs/with-active-flag';
 
-import {useAppSelector} from '../../hooks';
+import {useAppSelector, useAppDispatch} from '../../hooks';
+import {fetchOfferAction, fetchNearbyOffersAction, fetchCommentsAction, sendCommentAction} from '../../store/api-actions';
+
+import { adapterOfferType } from '../../services/adapter-offer-type';
 
 import Header from '../../components/header/header';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
@@ -15,21 +20,42 @@ import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
 import Bookmark from '../../components/bookmark/bookmark';
 
-type TPropertyPageProps = {
-  onSendReview: (review: TReview) => void;
-}
+function PropertyPage(): JSX.Element {
+  const {id} = useParams();
 
-function PropertyPage(props: TPropertyPageProps): JSX.Element {
-  const {onSendReview} = props;
+  const dispatch = useAppDispatch();
 
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const property = useAppSelector((state) => state.offer);
   const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
+  const reviews = useAppSelector((state) => state.comments);
 
   const BookmarkWrapped = withActiveFlag(Bookmark, property ? property.isFavorite : false);
 
-  const propertyReviews: TReview[] = [];
-  const nearbyOffersWithProperty = property ? [property] : [];
+  const nearbyOffersWithProperty = property ? [...nearbyOffers, property] : [...nearbyOffers];
+
+  const isDispatchStart = useRef(false);
+
+  useEffect(() => {
+    if (!isDispatchStart.current && id && property === null) {
+      isDispatchStart.current = true;
+
+      const idToNumber = Number(id);
+
+      dispatch(fetchOfferAction(idToNumber));
+      dispatch(fetchNearbyOffersAction(idToNumber));
+      dispatch(fetchCommentsAction(idToNumber));
+    }
+  });
+
+  const onSendReviewHandler = (data: TReviewPost): void => {
+    if (id) {
+      dispatch(sendCommentAction({
+        id: Number(id),
+        review: data
+      }));
+    }
+  };
 
   return (
     <div className="page">
@@ -46,9 +72,14 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
                 <div className="property__gallery">
                   {
                     property.images.map((img, i) => (
-                      <div key={`${img}-${i + 1}`} className="property__image-wrapper">
-                        <img className="property__image" src={img} alt={property.title} />
-                      </div>
+                      <Fragment key={`${img}-${i + 1}`} >
+                        {i < 6 &&
+                          <div className="property__image-wrapper">
+                            <img className="property__image" src={img} alt={property.title} />
+                          </div>}
+                        {i >= 6 &&
+                          ''}
+                      </Fragment>
                     ))
                   }
                 </div>
@@ -72,11 +103,11 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
                       <span style={{width: `${(property.rating / 5) * 100}%`}}></span>
                       <span className="visually-hidden">Rating</span>
                     </div>
-                    <span className="property__rating-value rating__value">{5 / 100 * property.rating}</span>
+                    <span className="property__rating-value rating__value">{property.rating}</span>
                   </div>
                   <ul className="property__features">
                     <li className="property__feature property__feature--entire">
-                      {property.type}
+                      {adapterOfferType(property.type)}
                     </li>
                     <li className="property__feature property__feature--bedrooms">
                       {property.bedrooms} Bedrooms
@@ -129,11 +160,11 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
                     </div>
                   </div>
                   <section className="property__reviews reviews">
-                    <ReviewList reviews={propertyReviews} />
+                    <ReviewList reviews={reviews} />
 
                     {authorizationStatus === AuthorizationStatus.Auth &&
                       <ReviewForm
-                        onSendReview={onSendReview}
+                        onSendReview={onSendReviewHandler}
                       />}
                   </section>
                 </div>
@@ -156,23 +187,6 @@ function PropertyPage(props: TPropertyPageProps): JSX.Element {
               </section>
             </div>
           </>}
-
-        {!property &&
-          <section className="property">
-            <div className="property__gallery-container container">
-              <div className="property__gallery">
-              </div>
-            </div>
-            <div className="property__container container">
-              <div className="property__wrapper">
-                <div className="property__name-wrapper">
-                  <h1 className="property__name">
-                    Offer not found
-                  </h1>
-                </div>
-              </div>
-            </div>
-          </section>}
       </main>
     </div>
   );

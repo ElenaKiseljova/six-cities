@@ -8,4 +8,4 @@ export type TReview = {
   user: TUserData;
 };
 
-export type TReviewPost = Pick<TReview, 'rating', 'comment'>;
+export type TReviewPost = Pick<TReview, 'rating' | 'comment'>;

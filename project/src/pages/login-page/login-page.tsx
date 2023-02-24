@@ -8,7 +8,8 @@ import {TAuthData} from '../../types/auth-data';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
 
-import {loginAction} from '../../store/api-actions';
+import {loginAction, clearErrorAction} from '../../store/api-actions';
+import {setError} from '../../store/action';
 
 import Header from '../../components/header/header';
 
@@ -26,7 +27,7 @@ const isValidField = (field: HTMLInputElement | null): boolean => {
 
   switch (type) {
     case 'email':
-      return /^([A-Za-z0-9_])+@([A-Za-z0-9_])+\.([A-Za-z]{2,})$/.test(value);
+      return /([A-Za-z0-9_])+@([A-Za-z0-9_])+\.([A-Za-z]{2,})/g.test(value);
 
     case 'password':
       return (
@@ -77,6 +78,9 @@ function LoginPage(): JSX.Element {
         login: loginRef.current.value,
         password: passwordRef.current.value,
       });
+    } else {
+      dispatch(setError('Email or password incorrect'));
+      dispatch(clearErrorAction());
     }
   };
 
@@ -114,6 +118,7 @@ function LoginPage(): JSX.Element {
                   type="password"
                   name="password"
                   placeholder="Password"
+                  title='Password must have more than 6 characters and contain: uppercase letter, number and some of spetisl chars !@#$%^&*'
                   required
                   ref={passwordRef}
                 />

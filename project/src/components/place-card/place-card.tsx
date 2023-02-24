@@ -8,7 +8,7 @@ import { TPlaceCard } from '../../types/offers';
 import withActiveFlag from '../../hocs/with-active-flag';
 
 import {useAppDispatch} from '../../hooks';
-import {fetchOfferAction} from '../../store/api-actions';
+import {fetchOfferAction, fetchNearbyOffersAction, fetchCommentsAction} from '../../store/api-actions';
 
 import { adapterOfferType } from '../../services/adapter-offer-type';
 
@@ -42,6 +42,8 @@ function PlaceCard(props: TPlaceCardProps): JSX.Element {
 
   const goToThePropertyPage = () => {
     dispatch(fetchOfferAction(id));
+    dispatch(fetchNearbyOffersAction(id));
+    dispatch(fetchCommentsAction(id));
   };
 
   return (

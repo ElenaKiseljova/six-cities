@@ -1,16 +1,12 @@
 import { FormEvent, ChangeEvent, useState, Fragment } from 'react';
 
-import { TReview } from '../../types/reviews';
-import { ICurUser } from '../../types/user';
+import { TReviewPost } from '../../types/reviews';
 
 type TReviewFormProps = {
-  user: ICurUser;
-  onSendReview: (review: TReview) => void;
+  onSendReview: (review: TReviewPost) => void;
 }
 
-function ReviewForm(props: TReviewFormProps): JSX.Element {
-  const {user, onSendReview} = props;
-
+function ReviewForm({onSendReview}: TReviewFormProps): JSX.Element {
   const [reviewRating, setReviewRating] = useState<number>(0);
   const [reviewText, setReviewText] = useState<string>('');
 
@@ -22,27 +18,26 @@ function ReviewForm(props: TReviewFormProps): JSX.Element {
     'terribly': 1,
   };
 
-  const isFormReady = (): boolean => reviewText !== '' && reviewRating !== 0;
+  const isFormReady = (): boolean => reviewText.length >= 50 && reviewRating !== 0;
+
+  const submitHandler = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    onSendReview({
+      rating: reviewRating,
+      comment: reviewText,
+    });
+
+    setReviewRating(0);
+    setReviewText('');
+  };
 
   return (
     <form
       className="reviews__form form"
       action="#"
       method="post"
-      onSubmit={(evt: FormEvent<HTMLFormElement>) => {
-        evt.preventDefault();
-
-        onSendReview({
-          id: new Date().toUTCString(),
-          rating: reviewRating,
-          text: reviewText,
-          user,
-          date: new Date().toISOString().split('T')[0],
-        });
-
-        setReviewRating(0);
-        setReviewText('');
-      }}
+      onSubmit={submitHandler}
     >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">

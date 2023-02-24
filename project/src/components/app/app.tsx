@@ -50,11 +50,7 @@ function App(): JSX.Element {
             <Route
               path={`${AppRoute.Property}/:id`}
               element={
-                <PropertyPage
-                  onSendReview={() => {
-                    throw new Error('Function \'onSendReview\' isn\'t implemented.');
-                  }}
-                />
+                <PropertyPage />
               }
             />
             <Route
