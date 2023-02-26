@@ -50,12 +50,13 @@ function Header(): JSX.Element {
                       </Link>
                     </li>
                     <li className="header__nav-item">
-                      <button
+                      <Link
                         className="header__nav-link button"
                         onClick={logoutHandler}
+                        to={AppRoute.Root}
                       >
                         <span className="header__signout">Sign out</span>
-                      </button>
+                      </Link>
                     </li>
                   </>}
                 {authorizationStatus !== AuthorizationStatus.Auth &&

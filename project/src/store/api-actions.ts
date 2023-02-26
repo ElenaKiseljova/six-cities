@@ -9,7 +9,7 @@ import { TUserData } from '../types/user-data';
 
 import {
   APIRoute,
-  AppRoute,
+  // AppRoute,
   AuthorizationStatus,
   TIMEOUT_SHOW_ERROR,
 } from '../const';
@@ -29,7 +29,8 @@ import {
   setComments,
   setOffers,
   updateOffers,
-  redirectToRoute,
+  resetFavoritesOffersFlag,
+  // redirectToRoute,
 } from './action';
 
 import { store } from './';
@@ -211,7 +212,7 @@ export const loginAction = createAsyncThunk<
 
     saveUserData(data);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    dispatch(redirectToRoute(AppRoute.Favorites));
+    // dispatch(redirectToRoute(AppRoute.Favorites));
   }
 );
 
@@ -227,6 +228,7 @@ export const logoutAction = createAsyncThunk<
   await api.delete(APIRoute.Logout);
 
   dropUserData();
+  dispatch(resetFavoritesOffersFlag());
   dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
   dispatch(setFavorites([]));
 });

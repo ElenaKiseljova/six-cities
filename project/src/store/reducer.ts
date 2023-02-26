@@ -7,6 +7,7 @@ import { TReview } from '../types/reviews';
 
 import {
   setOffers,
+  resetFavoritesOffersFlag,
   setSorting,
   requireAuthorization,
   setFavorites,
@@ -49,6 +50,12 @@ const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(setOffers, (state, action) => {
       state.offers = action.payload;
+    })
+    .addCase(resetFavoritesOffersFlag, (state) => {
+      state.offers = state.offers.map((offer) => ({
+        ...offer,
+        isFavorite: false,
+      }));
     })
     .addCase(setOffer, (state, action) => {
       state.offer = action.payload;

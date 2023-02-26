@@ -7,6 +7,9 @@ import { TReview } from '../types/reviews';
 
 export const setOffers = createAction<TPlaceCard[]>('offers/setList');
 export const updateOffers = createAction<TPlaceCard>('offer/updateOffers');
+export const resetFavoritesOffersFlag = createAction(
+  'offer/resetFavoritesOffersFlag'
+);
 
 export const setOffer = createAction<TPlaceCard>('offer/setProperty');
 

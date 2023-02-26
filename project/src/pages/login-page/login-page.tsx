@@ -55,7 +55,7 @@ function LoginPage(): JSX.Element {
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return (
-      <Navigate to={AppRoute.Root} />
+      <Navigate to={AppRoute.Favorites} />
     );
   }
 
