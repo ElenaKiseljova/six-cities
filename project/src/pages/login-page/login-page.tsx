@@ -8,8 +8,8 @@ import {TAuthData} from '../../types/auth-data';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
 
-import {loginAction, clearErrorAction} from '../../store/api-actions';
-import {setError} from '../../store/action';
+import {loginAction} from '../../store/api-actions';
+import { processErrorHandle } from '../../services/process-error-handle';
 
 import Header from '../../components/header/header';
 
@@ -79,8 +79,7 @@ function LoginPage(): JSX.Element {
         password: passwordRef.current.value,
       });
     } else {
-      dispatch(setError('Email or password incorrect'));
-      dispatch(clearErrorAction());
+      processErrorHandle('Email or password incorrect');
     }
   };
 
