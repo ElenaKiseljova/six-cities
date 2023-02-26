@@ -7,7 +7,12 @@ import { TReview, TReviewPost } from '../types/reviews';
 import { TAuthData } from '../types/auth-data';
 import { TUserData } from '../types/user-data';
 
-import { APIRoute, AuthorizationStatus, TIMEOUT_SHOW_ERROR } from '../const';
+import {
+  APIRoute,
+  AppRoute,
+  AuthorizationStatus,
+  TIMEOUT_SHOW_ERROR,
+} from '../const';
 
 import { saveUserData, dropUserData } from '../services/user';
 
@@ -24,6 +29,7 @@ import {
   setComments,
   setOffers,
   updateOffers,
+  redirectToRoute,
 } from './action';
 
 import { store } from './';
@@ -205,6 +211,7 @@ export const loginAction = createAsyncThunk<
 
     saveUserData(data);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    dispatch(redirectToRoute(AppRoute.Favorites));
   }
 );
 

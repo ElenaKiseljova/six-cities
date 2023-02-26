@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 
-import { AuthorizationStatus, SORTING_VALUES } from '../const';
+import { AppRoute, AuthorizationStatus, SORTING_VALUES } from '../const';
 
 import { TPlaceCard } from '../types/offers';
 import { TReview } from '../types/reviews';
@@ -32,6 +32,8 @@ export const removeFromFavorites = createAction<TPlaceCard>(
 );
 
 export const setError = createAction<string | null>('server/setError');
+
+export const redirectToRoute = createAction<AppRoute>('server/redirectToRoute');
 
 export const setDataLoadingStatus = createAction<boolean>(
   'data/setDataLoadingStatus'
