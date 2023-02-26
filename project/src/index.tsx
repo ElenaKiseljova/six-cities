@@ -8,6 +8,7 @@ import {checkAuthAction, fetchOffersAction} from './store/api-actions';
 
 import App from './components/app/app';
 // import ErrorMessage from './components/error-message/error-message';
+import 'react-toastify/dist/ReactToastify.css';
 
 store.dispatch(fetchOffersAction());
 store.dispatch(checkAuthAction());

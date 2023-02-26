@@ -81,7 +81,7 @@ function LoginPage(): JSX.Element {
       });
     } else {
       // processErrorHandle('Email or password incorrect');
-      toast.warn('Email or password incorrect');
+      toast.error('Email or password incorrect');
     }
   };
 
