@@ -1,9 +1,14 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {Routes, Route} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
+
+import browserHistory from '../../browser-history';
 
 import {AppRoute, AuthorizationStatus} from '../../const';
 
 import {useAppSelector} from '../../hooks';
+
+import HistoryRouter from '../history-route/history-route';
+import LoadingPage from '../../pages/loading-page/loading-page';
 
 import PrivateRoute from '../private-route/private-route';
 
@@ -12,7 +17,6 @@ import FvoritesPage from '../../pages/favorites-page/favorites-page';
 import LoginPage from '../../pages/login-page/login-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import NotFoundPage from '../../pages/not-found-page/not-found';
-import LoadingPage from '../../pages/loading-page/loading-page';
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
@@ -31,7 +35,7 @@ function App(): JSX.Element {
       </div>
 
       <HelmetProvider>
-        <BrowserRouter>
+        <HistoryRouter history={browserHistory}>
           <Routes>
             <Route path={AppRoute.Root}>
               <Route
@@ -72,7 +76,7 @@ function App(): JSX.Element {
               element={<NotFoundPage />}
             />
           </Routes>
-        </BrowserRouter>
+        </HistoryRouter>
       </HelmetProvider>
     </>
   );
