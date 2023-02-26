@@ -1,25 +1,49 @@
+import { useRef, useEffect } from 'react';
 import {Helmet} from 'react-helmet-async';
 
 import { TPlaceCard, TPlaceCardByCity } from '../../types/offers';
 
+import {useAppSelector, useAppDispatch} from '../../hooks/index';
+
+import { fetchFavoritesOffersAction } from '../../store/api-actions';
+
 import Header from '../../components/header/header';
 import PlaceCard from '../../components/place-card/place-card';
 
-function FavoritesPage(): JSX.Element {
-  const favoritesPlaceCards: TPlaceCard[] = [];
+const getFavoritesSortedByCity = (favorites: TPlaceCard[]): TPlaceCardByCity => {
   const favoritesPlaceCardsByCity: TPlaceCardByCity = {};
 
-  if (favoritesPlaceCards && Array.isArray(favoritesPlaceCards)) {
-    favoritesPlaceCards.forEach((favoritesPlaceCard) => {
-      if (typeof favoritesPlaceCard.city === 'string') {
-        if (Array.isArray(favoritesPlaceCardsByCity[favoritesPlaceCard.city])) {
-          favoritesPlaceCardsByCity[favoritesPlaceCard.city].push(favoritesPlaceCard);
+  if (favorites && Array.isArray(favorites)) {
+    favorites.forEach((favoritesPlaceCard) => {
+      if (typeof favoritesPlaceCard.city.name === 'string') {
+        if (Array.isArray(favoritesPlaceCardsByCity[favoritesPlaceCard.city.name])) {
+          favoritesPlaceCardsByCity[favoritesPlaceCard.city.name].push(favoritesPlaceCard);
         } else {
-          favoritesPlaceCardsByCity[favoritesPlaceCard.city] = [favoritesPlaceCard];
+          favoritesPlaceCardsByCity[favoritesPlaceCard.city.name] = [favoritesPlaceCard];
         }
       }
     });
   }
+
+  return favoritesPlaceCardsByCity;
+};
+
+function FavoritesPage(): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const favoritesPlaceCards = useAppSelector((state) => state.favorites);
+
+  const favoritesPlaceCardsByCity = getFavoritesSortedByCity(favoritesPlaceCards);
+
+  const isDispatchStart = useRef(false);
+
+  useEffect(() => {
+    if (!isDispatchStart.current && !favoritesPlaceCards.length) {
+      isDispatchStart.current = true;
+
+      dispatch(fetchFavoritesOffersAction());
+    }
+  });
 
   return (
     <div className={`page ${favoritesPlaceCards.length > 0 ? '' : 'page--favorites-empty'}`}>
@@ -33,7 +57,8 @@ function FavoritesPage(): JSX.Element {
           <section className={`favorites ${favoritesPlaceCards.length > 0 ? '' : 'favorites--empty'}`}>
             {favoritesPlaceCards.length > 0 &&
               <>
-                <h1 className="favorites__title">Saved listing</h1>
+                <h1 className="favorites__title">Saved listing ({favoritesPlaceCards.length})</h1>
+
                 <ul className="favorites__list">
                   {
                     Object.keys(favoritesPlaceCardsByCity).map((city, index) => (

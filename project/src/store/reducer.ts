@@ -10,10 +10,14 @@ import {
   setSorting,
   requireAuthorization,
   setFavorites,
+  addToFavorites,
+  removeFromFavorites,
   setError,
   setDataLoadingStatus,
   setOffer,
+  updateOffers,
   setNearbyOffers,
+  updateNearbyOffers,
   setComments,
 } from './action';
 
@@ -49,8 +53,22 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setOffer, (state, action) => {
       state.offer = action.payload;
     })
+    .addCase(updateOffers, (state, action) => {
+      state.offers = state.offers.map((offer) =>
+        offer.id === action.payload.id
+          ? { ...offer, isFavorite: action.payload.isFavorite }
+          : offer
+      );
+    })
     .addCase(setNearbyOffers, (state, action) => {
       state.nearbyOffers = action.payload;
+    })
+    .addCase(updateNearbyOffers, (state, action) => {
+      state.nearbyOffers = state.nearbyOffers.map((offer) =>
+        offer.id === action.payload.id
+          ? { ...offer, isFavorite: action.payload.isFavorite }
+          : offer
+      );
     })
     .addCase(setComments, (state, action) => {
       state.comments = action.payload;
@@ -63,6 +81,14 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setFavorites, (state, action) => {
       state.favorites = action.payload;
+    })
+    .addCase(addToFavorites, (state, action) => {
+      state.favorites.push(action.payload);
+    })
+    .addCase(removeFromFavorites, (state, action) => {
+      state.favorites = state.favorites.filter(
+        (offer) => offer.id !== action.payload.id
+      );
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;

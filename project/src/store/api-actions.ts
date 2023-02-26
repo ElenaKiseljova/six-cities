@@ -14,12 +14,16 @@ import { saveUserData, dropUserData } from '../services/user';
 import {
   requireAuthorization,
   setFavorites,
+  addToFavorites,
+  removeFromFavorites,
   setError,
   setDataLoadingStatus,
   setOffer,
   setNearbyOffers,
+  updateNearbyOffers,
   setComments,
   setOffers,
+  updateOffers,
 } from './action';
 
 import { store } from './';
@@ -120,6 +124,50 @@ export const sendCommentAction = createAsyncThunk<
 
   dispatch(setComments(data));
 });
+
+export const fetchFavoritesOffersAction = createAsyncThunk<
+  void,
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchFavoritesOffers', async (_arg, { dispatch, extra: api }) => {
+  const { data } = await api.get<TPlaceCard[]>(APIRoute.Favorite);
+
+  dispatch(setFavorites(data));
+});
+
+export const toggleOfferFavoriteStatusAction = createAsyncThunk<
+  void,
+  {
+    id: number;
+    status: 1 | 0;
+  },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>(
+  'data/toggleOfferFavoriteStatus',
+  async ({ id, status }, { dispatch, extra: api }) => {
+    const { data } = await api.post<TPlaceCard>(
+      `${APIRoute.Favorite}/${id}/${status}`
+    );
+
+    dispatch(setOffer(data));
+    dispatch(updateOffers(data));
+    dispatch(updateNearbyOffers(data));
+
+    if (status === 1) {
+      dispatch(addToFavorites(data));
+    } else {
+      dispatch(removeFromFavorites(data));
+    }
+  }
+);
 
 export const checkAuthAction = createAsyncThunk<
   void,

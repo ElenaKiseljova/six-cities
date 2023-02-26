@@ -71,7 +71,7 @@ function PlaceCard(props: TPlaceCardProps): JSX.Element {
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
 
-          <BookmarkWrapped />
+          <BookmarkWrapped offer={data} />
         </div>
         <div className="place-card__rating rating">
           <div className="place-card__stars rating__stars">

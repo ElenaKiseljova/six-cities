@@ -96,7 +96,7 @@ function PropertyPage(): JSX.Element {
                       {property.title}
                     </h1>
 
-                    <BookmarkWrapped sectionName="property" />
+                    <BookmarkWrapped offer={property} sectionName="property" />
                   </div>
                   <div className="property__rating rating">
                     <div className="property__stars rating__stars">
