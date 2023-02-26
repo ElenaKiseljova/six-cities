@@ -1,6 +1,7 @@
 import { useRef, FormEvent } from 'react';
 import {Helmet} from 'react-helmet-async';
 import { Link, Navigate } from 'react-router-dom';
+import {toast} from 'react-toastify';
 
 import { AuthorizationStatus, AppRoute, CITIES } from '../../const';
 
@@ -9,7 +10,7 @@ import {TAuthData} from '../../types/auth-data';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 
 import {loginAction} from '../../store/api-actions';
-import { processErrorHandle } from '../../services/process-error-handle';
+// import { processErrorHandle } from '../../services/process-error-handle';
 
 import Header from '../../components/header/header';
 
@@ -79,7 +80,8 @@ function LoginPage(): JSX.Element {
         password: passwordRef.current.value,
       });
     } else {
-      processErrorHandle('Email or password incorrect');
+      // processErrorHandle('Email or password incorrect');
+      toast.warn('Email or password incorrect');
     }
   };
 

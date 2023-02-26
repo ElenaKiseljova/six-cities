@@ -13,7 +13,7 @@ import {
   setFavorites,
   addToFavorites,
   removeFromFavorites,
-  setError,
+  // setError,
   setDataLoadingStatus,
   setOffer,
   updateOffers,
@@ -30,7 +30,7 @@ interface IState {
   sorting: SORTING_VALUES;
   authorizationStatus: AuthorizationStatus;
   favorites: TPlaceCard[];
-  error: string | null;
+  // error: string | null;
   isOffersDataLoading: boolean;
 }
 
@@ -42,7 +42,7 @@ const initialState: IState = {
   sorting: SORTING_VALUES.POPULAR,
   authorizationStatus: AuthorizationStatus.Unknown,
   favorites: [],
-  error: null,
+  // error: null,
   isOffersDataLoading: false,
 };
 
@@ -97,9 +97,9 @@ const reducer = createReducer(initialState, (builder) => {
         (offer) => offer.id !== action.payload.id
       );
     })
-    .addCase(setError, (state, action) => {
-      state.error = action.payload;
-    })
+    // .addCase(setError, (state, action) => {
+    //   state.error = action.payload;
+    // })
     .addCase(setDataLoadingStatus, (state, action) => {
       state.isOffersDataLoading = action.payload;
     });

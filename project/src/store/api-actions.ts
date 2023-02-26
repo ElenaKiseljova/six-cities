@@ -11,7 +11,7 @@ import {
   APIRoute,
   // AppRoute,
   AuthorizationStatus,
-  TIMEOUT_SHOW_ERROR,
+  // TIMEOUT_SHOW_ERROR,
 } from '../const';
 
 import { saveUserData, dropUserData } from '../services/user';
@@ -21,7 +21,7 @@ import {
   setFavorites,
   addToFavorites,
   removeFromFavorites,
-  setError,
+  // setError,
   setDataLoadingStatus,
   setOffer,
   setNearbyOffers,
@@ -33,11 +33,11 @@ import {
   // redirectToRoute,
 } from './action';
 
-import { store } from './';
+// import { store } from './';
 
-export const clearErrorAction = createAsyncThunk('server/clearError', () => {
-  setTimeout(() => store.dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
-});
+// export const clearErrorAction = createAsyncThunk('server/clearError', () => {
+//   setTimeout(() => store.dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
+// });
 
 export const fetchOffersAction = createAsyncThunk<
   void,
