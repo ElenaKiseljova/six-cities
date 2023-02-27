@@ -1,7 +1,5 @@
 import { TCity } from './types/city';
 
-export const TIMEOUT_SHOW_ERROR = 2000;
-
 export const CITIES: TCity[] = [
   {
     name: 'Amsterdam',

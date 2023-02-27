@@ -15,6 +15,7 @@ import CitiesList from '../../components/cities-list/cities-list';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Map from '../../components/map/map';
 import Sorting from '../../components/sorting/sorting';
+import { useState } from 'react';
 
 const getSortedOffersBy = (arr: TPlaceCard[], by: SORTING_VALUES): TPlaceCard[] => {
   switch (by) {
@@ -37,8 +38,9 @@ function MainPage(): JSX.Element {
 
   const {city: cityName} = useParams();
 
+  const [sortBy, setSortBy] = useState(SORTING_VALUES.POPULAR);
+
   const offers = useAppSelector((state) => state.offers);
-  const sortBy = useAppSelector((state) => state.sorting);
 
   const offersInCity = cityName ? offers.filter((offer) => offer.city.name === cityName) : offers;
   const offersInCitySorting = getSortedOffersBy(offersInCity, sortBy);
@@ -72,7 +74,7 @@ function MainPage(): JSX.Element {
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">{offersCount} places to stay in {cityName}</b>
 
-                <SortingWrapped />
+                <SortingWrapped sortBy={sortBy} onChangeSortBy={(value) => setSortBy(value)} />
 
                 <PlaceCardList
                   sectionName='cities'

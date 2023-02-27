@@ -7,114 +7,72 @@ import { TReview, TReviewPost } from '../types/reviews';
 import { TAuthData } from '../types/auth-data';
 import { TUserData } from '../types/user-data';
 
-import {
-  APIRoute,
-  // AppRoute,
-  // AuthorizationStatus,
-  // TIMEOUT_SHOW_ERROR,
-} from '../const';
+import { APIRoute, AppRoute } from '../const';
 
 import { saveUserData, dropUserData } from '../services/user';
 
-import {
-  // requireAuthorization,
-  setFavorites,
-  addToFavorites,
-  removeFromFavorites,
-  // setError,
-  setDataLoadingStatus,
-  setOffer,
-  setNearbyOffers,
-  updateNearbyOffers,
-  setComments,
-  setOffers,
-  updateOffers,
-  resetFavoritesOffersFlag,
-  // redirectToRoute,
-} from './action';
-
-// import { store } from './';
-
-// export const clearErrorAction = createAsyncThunk('server/clearError', () => {
-//   setTimeout(() => store.dispatch(setError(null)), TIMEOUT_SHOW_ERROR);
-// });
+import { redirectToRoute } from './action';
 
 export const fetchOffersAction = createAsyncThunk<
-  void,
+  TPlaceCard[],
   undefined,
   {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('data/fetchOffers', async (_arg, { dispatch, extra: api }) => {
-  dispatch(setDataLoadingStatus(true));
-
+>('offers/fetchOffers', async (_arg, { dispatch, extra: api }) => {
   const { data } = await api.get<TPlaceCard[]>(APIRoute.Hotels);
 
-  dispatch(setDataLoadingStatus(false));
-
-  dispatch(setOffers(data));
+  return data;
 });
 
 export const fetchOfferAction = createAsyncThunk<
-  void,
+  TPlaceCard,
   number,
   {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('data/fetchOffer', async (id, { dispatch, extra: api }) => {
-  dispatch(setDataLoadingStatus(true));
-
+>('offer/fetchOffer', async (id, { dispatch, extra: api }) => {
   const { data } = await api.get<TPlaceCard>(`${APIRoute.Hotels}/${id}`);
 
-  dispatch(setDataLoadingStatus(false));
-
-  dispatch(setOffer(data));
+  return data;
 });
 
 export const fetchNearbyOffersAction = createAsyncThunk<
-  void,
+  TPlaceCard[],
   number,
   {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('data/fetchNearbyOffers', async (id, { dispatch, extra: api }) => {
-  dispatch(setDataLoadingStatus(true));
-
+>('offer/fetchNearbyOffers', async (id, { dispatch, extra: api }) => {
   const { data } = await api.get<TPlaceCard[]>(
     `${APIRoute.Hotels}/${id}/nearby`
   );
 
-  dispatch(setDataLoadingStatus(false));
-
-  dispatch(setNearbyOffers(data));
+  return data;
 });
 
 export const fetchCommentsAction = createAsyncThunk<
-  void,
+  TReview[],
   number,
   {
     dispatch: AppDispatch;
     state: State;
     extra: AxiosInstance;
   }
->('data/fetchComments', async (id, { dispatch, extra: api }) => {
-  dispatch(setDataLoadingStatus(true));
-
+>('offer/fetchComments', async (id, { dispatch, extra: api }) => {
   const { data } = await api.get<TReview[]>(`${APIRoute.Reviews}/${id}`);
 
-  dispatch(setDataLoadingStatus(false));
-
-  dispatch(setComments(data));
+  return data;
 });
 
 export const sendCommentAction = createAsyncThunk<
-  void,
+  TReview[],
   {
     id: number;
     review: TReviewPost;
@@ -124,30 +82,19 @@ export const sendCommentAction = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
->('data/sendComment', async ({ id, review }, { dispatch, extra: api }) => {
+>('offer/sendComment', async ({ id, review }, { dispatch, extra: api }) => {
   const { data } = await api.post<TReview[]>(`${APIRoute.Reviews}/${id}`, {
     ...review,
   });
 
-  dispatch(setComments(data));
-});
-
-export const fetchFavoritesOffersAction = createAsyncThunk<
-  void,
-  undefined,
-  {
-    dispatch: AppDispatch;
-    state: State;
-    extra: AxiosInstance;
-  }
->('data/fetchFavoritesOffers', async (_arg, { dispatch, extra: api }) => {
-  const { data } = await api.get<TPlaceCard[]>(APIRoute.Favorite);
-
-  dispatch(setFavorites(data));
+  return data;
 });
 
 export const toggleOfferFavoriteStatusAction = createAsyncThunk<
-  void,
+  {
+    data: TPlaceCard;
+    status: 0 | 1;
+  },
   {
     id: number;
     status: 1 | 0;
@@ -158,23 +105,29 @@ export const toggleOfferFavoriteStatusAction = createAsyncThunk<
     extra: AxiosInstance;
   }
 >(
-  'data/toggleOfferFavoriteStatus',
+  'offer/toggleOfferFavoriteStatus',
   async ({ id, status }, { dispatch, extra: api }) => {
     const { data } = await api.post<TPlaceCard>(
       `${APIRoute.Favorite}/${id}/${status}`
     );
 
-    dispatch(setOffer(data));
-    dispatch(updateOffers(data));
-    dispatch(updateNearbyOffers(data));
-
-    if (status === 1) {
-      dispatch(addToFavorites(data));
-    } else {
-      dispatch(removeFromFavorites(data));
-    }
+    return { data, status };
   }
 );
+
+export const fetchFavoritesOffersAction = createAsyncThunk<
+  TPlaceCard[],
+  undefined,
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('user/fetchFavoritesOffers', async (_arg, { dispatch, extra: api }) => {
+  const { data } = await api.get<TPlaceCard[]>(APIRoute.Favorite);
+
+  return data;
+});
 
 export const checkAuthAction = createAsyncThunk<
   void,
@@ -185,13 +138,6 @@ export const checkAuthAction = createAsyncThunk<
     extra: AxiosInstance;
   }
 >('user/checkAuth', async (_arg, { dispatch, extra: api }) => {
-  // try {
-  //   await api.get(APIRoute.Login);
-
-  //   dispatch(requireAuthorization(AuthorizationStatus.Auth));
-  // } catch {
-  //   dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-  // }
   await api.get(APIRoute.Login);
 });
 
@@ -212,8 +158,8 @@ export const loginAction = createAsyncThunk<
     });
 
     saveUserData(data);
-    // dispatch(requireAuthorization(AuthorizationStatus.Auth));
-    // dispatch(redirectToRoute(AppRoute.Favorites));
+
+    dispatch(redirectToRoute(AppRoute.Favorites));
   }
 );
 
@@ -229,7 +175,4 @@ export const logoutAction = createAsyncThunk<
   await api.delete(APIRoute.Logout);
 
   dropUserData();
-  dispatch(resetFavoritesOffersFlag());
-  // dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-  dispatch(setFavorites([]));
 });

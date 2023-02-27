@@ -2,20 +2,21 @@ import { useEffect } from 'react';
 
 import { SORTING_VALUES } from '../../const';
 
-import {useAppSelector, useAppDispatch} from '../../hooks';
-
-import {setSorting} from '../../store/action';
-
 import cn from 'classnames';
 
 type TSortingProps = {
   isActive: boolean;
   onActiveChange: () => void;
+  sortBy: SORTING_VALUES;
+  onChangeSortBy: (sortBy: SORTING_VALUES) => void;
 }
 
-function Sorting({isActive, onActiveChange}: TSortingProps): JSX.Element {
-  const dispatch = useAppDispatch();
-  const sortBy = useAppSelector((state) => state.sorting);
+function Sorting({isActive, onActiveChange, sortBy, onChangeSortBy}: TSortingProps): JSX.Element {
+  const clickHandler = (value: SORTING_VALUES) => {
+    onChangeSortBy(value);
+
+    onActiveChange();
+  };
 
   useEffect(() => {
     const documentClickHandler = (evt: Event) => {
@@ -61,11 +62,7 @@ function Sorting({isActive, onActiveChange}: TSortingProps): JSX.Element {
               {'places__option--active': value === sortBy}
             )}
             tabIndex={0}
-            onClick={() => {
-              dispatch(setSorting(value));
-
-              onActiveChange();
-            }}
+            onClick={() => clickHandler(value)}
           >
             {value}
           </li>))}
