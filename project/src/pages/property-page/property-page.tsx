@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
 
@@ -19,6 +19,7 @@ import ReviewForm from '../../components/review-form/review-form';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
 import Bookmark from '../../components/bookmark/bookmark';
+import PropertyGallery from '../../components/property-gallery/property-gallery';
 
 function PropertyPage(): JSX.Element {
   const {id} = useParams();
@@ -68,22 +69,8 @@ function PropertyPage(): JSX.Element {
         {property &&
           <>
             <section className="property">
-              <div className="property__gallery-container container">
-                <div className="property__gallery">
-                  {
-                    property.images.map((img, i) => (
-                      <Fragment key={`${img}-${i + 1}`} >
-                        {i < 6 &&
-                          <div className="property__image-wrapper">
-                            <img className="property__image" src={img} alt={property.title} />
-                          </div>}
-                        {i >= 6 &&
-                          ''}
-                      </Fragment>
-                    ))
-                  }
-                </div>
-              </div>
+              <PropertyGallery offer={property} />
+
               <div className="property__container container">
                 <div className="property__wrapper">
                   {property.isPremium &&
