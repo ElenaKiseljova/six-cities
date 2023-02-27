@@ -10,14 +10,14 @@ import { TUserData } from '../types/user-data';
 import {
   APIRoute,
   // AppRoute,
-  AuthorizationStatus,
+  // AuthorizationStatus,
   // TIMEOUT_SHOW_ERROR,
 } from '../const';
 
 import { saveUserData, dropUserData } from '../services/user';
 
 import {
-  requireAuthorization,
+  // requireAuthorization,
   setFavorites,
   addToFavorites,
   removeFromFavorites,
@@ -185,13 +185,14 @@ export const checkAuthAction = createAsyncThunk<
     extra: AxiosInstance;
   }
 >('user/checkAuth', async (_arg, { dispatch, extra: api }) => {
-  try {
-    await api.get(APIRoute.Login);
+  // try {
+  //   await api.get(APIRoute.Login);
 
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
-  } catch {
-    dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-  }
+  //   dispatch(requireAuthorization(AuthorizationStatus.Auth));
+  // } catch {
+  //   dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+  // }
+  await api.get(APIRoute.Login);
 });
 
 export const loginAction = createAsyncThunk<
@@ -211,7 +212,7 @@ export const loginAction = createAsyncThunk<
     });
 
     saveUserData(data);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    // dispatch(requireAuthorization(AuthorizationStatus.Auth));
     // dispatch(redirectToRoute(AppRoute.Favorites));
   }
 );
@@ -229,6 +230,6 @@ export const logoutAction = createAsyncThunk<
 
   dropUserData();
   dispatch(resetFavoritesOffersFlag());
-  dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+  // dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
   dispatch(setFavorites([]));
 });

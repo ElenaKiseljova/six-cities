@@ -85,3 +85,11 @@ export enum APIRoute {
   Reviews = '/comments',
   Favorite = '/favorite',
 }
+
+export enum NameSpace {
+  Server = 'SERVER',
+  Offers = 'OFFERS',
+  Offer = 'OFFER',
+  Sorting = 'SORTING',
+  User = 'USER',
+}

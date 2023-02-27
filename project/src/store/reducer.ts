@@ -1,6 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
 
-import { AuthorizationStatus, SORTING_VALUES } from '../const';
+import {
+  // AuthorizationStatus,
+  SORTING_VALUES,
+} from '../const';
 
 import { TPlaceCard } from '../types/offers';
 import { TReview } from '../types/reviews';
@@ -9,7 +12,7 @@ import {
   setOffers,
   resetFavoritesOffersFlag,
   setSorting,
-  requireAuthorization,
+  // requireAuthorization,
   setFavorites,
   addToFavorites,
   removeFromFavorites,
@@ -28,7 +31,7 @@ interface IState {
   nearbyOffers: TPlaceCard[];
   comments: TReview[];
   sorting: SORTING_VALUES;
-  authorizationStatus: AuthorizationStatus;
+  // authorizationStatus: AuthorizationStatus;
   favorites: TPlaceCard[];
   // error: string | null;
   isOffersDataLoading: boolean;
@@ -40,7 +43,7 @@ const initialState: IState = {
   nearbyOffers: [],
   comments: [],
   sorting: SORTING_VALUES.POPULAR,
-  authorizationStatus: AuthorizationStatus.Unknown,
+  // authorizationStatus: AuthorizationStatus.Unknown,
   favorites: [],
   // error: null,
   isOffersDataLoading: false,
@@ -83,9 +86,9 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setSorting, (state, action) => {
       state.sorting = action.payload;
     })
-    .addCase(requireAuthorization, (state, action) => {
-      state.authorizationStatus = action.payload;
-    })
+    // .addCase(requireAuthorization, (state, action) => {
+    //   state.authorizationStatus = action.payload;
+    // })
     .addCase(setFavorites, (state, action) => {
       state.favorites = action.payload;
     })
