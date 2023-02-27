@@ -1,14 +1,13 @@
 import {Helmet} from 'react-helmet-async';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-import { AuthorizationStatus, AppRoute, CITIES } from '../../const';
+import { AuthorizationStatus, AppRoute } from '../../const';
 
 import { useAppSelector } from '../../hooks';
 
 import Header from '../../components/header/header';
 import LoginForm from '../../components/login-form/login-form';
-
-const getRandomCity = () => CITIES[Math.abs(Math.floor(Math.random() * CITIES.length) - 1)];
+import RandomCity from '../../components/random-city/random-city';
 
 function LoginPage(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
@@ -18,8 +17,6 @@ function LoginPage(): JSX.Element {
       <Navigate to={AppRoute.Favorites} />
     );
   }
-
-  const city = getRandomCity();
 
   return (
     <div className="page page--gray page--login">
@@ -37,9 +34,7 @@ function LoginPage(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link className="locations__item-link" to={`${AppRoute.Root}${city.name}`}>
-                <span>{city.name}</span>
-              </Link>
+              <RandomCity />
             </div>
           </section>
         </div>

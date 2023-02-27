@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
 import Header from '../../components/header/header';
+import RandomCity from '../../components/random-city/random-city';
 
 function NotFoundPage(): JSX.Element {
   return (
@@ -24,9 +25,7 @@ function NotFoundPage(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#top">
-                <span>Amsterdam</span>
-              </a>
+              <RandomCity />
             </div>
           </section>
         </div>
