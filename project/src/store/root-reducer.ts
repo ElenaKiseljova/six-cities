@@ -1,0 +1,15 @@
+import { combineReducers } from '@reduxjs/toolkit';
+
+import { NameSpace } from '../const';
+
+import { offerProcess } from './offer-process/offer-process';
+import { offersProcess } from './offers-process/offers-process';
+import { serverProcess } from './server-process/server-process';
+import { userProcess } from './user-process/user-process';
+
+export const rootReducer = combineReducers({
+  [NameSpace.Offers]: offersProcess.reducer,
+  [NameSpace.Offer]: offerProcess.reducer,
+  [NameSpace.User]: userProcess.reducer,
+  [NameSpace.Server]: serverProcess.reducer,
+});

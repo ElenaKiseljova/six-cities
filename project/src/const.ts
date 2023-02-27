@@ -88,6 +88,5 @@ export enum NameSpace {
   Server = 'SERVER',
   Offers = 'OFFERS',
   Offer = 'OFFER',
-  Sorting = 'SORTING',
   User = 'USER',
 }

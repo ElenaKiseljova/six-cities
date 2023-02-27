@@ -74,7 +74,7 @@ export const offerProcess = createSlice({
       .addCase(sendCommentAction.fulfilled, (_state, action) => {
         offerProcess.actions.setComments(action.payload);
       })
-      .addCase(toggleOfferFavoriteStatusAction.fulfilled, (_state, action) => {
+      .addCase(toggleOfferFavoriteStatusAction.fulfilled, (state, action) => {
         const { data, status } = action.payload;
 
         offerProcess.actions.setOffer(data);
