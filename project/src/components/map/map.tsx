@@ -1,4 +1,4 @@
-import {useRef, useEffect} from 'react';
+import {useRef, useEffect, useMemo} from 'react';
 import {Icon, Marker} from 'leaflet';
 
 import useMap from '../../hooks/useMap';
@@ -32,15 +32,17 @@ const currentCustomIcon = new Icon({
 function Map (props: TMapProps): JSX.Element {
   const {city, offers, selectedPlaceCard, classList} = props;
 
-  const mapRef = useRef(null);
-  const map = useMap(mapRef, city || {
+  const curCity = useMemo<TCity>(() => city ?? {
     location: {
       latitude: 52.38249006767424,
       longitude: 4.891808097764281,
       zoom: 5,
     },
     name: 'all'
-  });
+  }, [city]);
+
+  const mapRef = useRef(null);
+  const map = useMap(mapRef, curCity);
 
   const markers = useRef<{[cityTitle: string]: Marker[]}>({});
 
@@ -61,9 +63,9 @@ function Map (props: TMapProps): JSX.Element {
         );
 
         // Добавление новых маркеров в объект
-        markers.current[city?.name || 'all'] ?
-          markers.current[city?.name || 'all'].push(marker) :
-          markers.current[city?.name || 'all'] = [marker];
+        markers.current[curCity.name || 'all'] ?
+          markers.current[curCity.name || 'all'].push(marker) :
+          markers.current[curCity.name || 'all'] = [marker];
 
         // Шаблон попапа маркера
         const popupTemplate = `
@@ -85,13 +87,13 @@ function Map (props: TMapProps): JSX.Element {
           .addTo(map);
       });
     }
-  }, [map, offers, city, selectedPlaceCard]);
+  }, [map, offers, curCity, selectedPlaceCard]);
 
   useEffect(() => {
     // Проверка наличия отрисованных маркеров других городов
     if (Object.keys(markers.current).length) {
       for (const [c, m] of Object.entries(markers.current)) {
-        if (c !== (city?.name || 'all')) {
+        if (c !== (curCity.name || 'all')) {
           // Удаление слоёв маркеров
           m.forEach((mark) => mark.remove());
 
@@ -100,7 +102,7 @@ function Map (props: TMapProps): JSX.Element {
         }
       }
     }
-  }, [city]);
+  }, [curCity]);
   return (
     <section
       className={`${classList ? classList : 'cities__map'} map`}

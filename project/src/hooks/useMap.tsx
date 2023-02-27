@@ -19,7 +19,7 @@ function useMap(
 
     const {location} = city;
 
-    if (!isInitedMap.current) {
+    if (!isInitedMap.current && 'latitude' in location) {
       isInitedMap.current = true;
 
       instanceMap.current = new Map(mapRef.current, {
@@ -41,7 +41,7 @@ function useMap(
       instanceMap.current.addLayer(layer);
 
       setMap(instanceMap.current);
-    } else if (isInitedMap.current && map) {
+    } else if (isInitedMap.current && map && 'latitude' in location) {
       const center = new LatLng(location.latitude, location.longitude);
 
       // instanceMap.current?.setView(center, city.zoom);
