@@ -17,7 +17,7 @@ import Bookmark from '../bookmark/bookmark';
 type TPlaceCardProps = {
   data: TPlaceCard;
   sectionName?: string;
-  onHover?: (placeName: string | undefined) => void;
+  onHover?: (place: TPlaceCard | undefined) => void;
 }
 
 function PlaceCard(props: TPlaceCardProps): JSX.Element {
@@ -31,7 +31,7 @@ function PlaceCard(props: TPlaceCardProps): JSX.Element {
   const placeCardMouseEnterHandler = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
 
-    return typeof onHover === 'function' ? onHover(data.title) : false;
+    return typeof onHover === 'function' ? onHover(data) : false;
   };
 
   const placeCardMouseLeaveHandler = (evt: MouseEvent<HTMLElement>) => {

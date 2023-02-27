@@ -6,7 +6,7 @@ type TPlaceCardListProps = {
   sectionName?: string;
   additionalClasses?: string[] | string;
   offers: TPlaceCard[];
-  onPlaceCardHover?: (placeName: string | undefined) => void;
+  onPlaceCardHover?: (placeName: TPlaceCard | undefined) => void;
 };
 
 function PlaceCardList(props: TPlaceCardListProps): JSX.Element {
@@ -21,9 +21,9 @@ function PlaceCardList(props: TPlaceCardListProps): JSX.Element {
     }
   }
 
-  const placeCardHoverHandler = (placeName: string | undefined) => {
+  const placeCardHoverHandler = (place: TPlaceCard | undefined) => {
     if (typeof onPlaceCardHover === 'function') {
-      onPlaceCardHover(placeName);
+      onPlaceCardHover(place);
     }
   };
 
