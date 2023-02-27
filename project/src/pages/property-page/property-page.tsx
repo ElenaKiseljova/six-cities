@@ -9,6 +9,9 @@ import { TReviewPost } from '../../types/reviews';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {fetchOfferAction, fetchNearbyOffersAction, fetchCommentsAction, sendCommentAction} from '../../store/api-actions';
 
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { getComments, getNearbyOffers, getOffer } from '../../store/offer-process/selectors';
+
 import Header from '../../components/header/header';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
 import ReviewForm from '../../components/review-form/review-form';
@@ -24,10 +27,10 @@ function PropertyPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
-  const property = useAppSelector((state) => state.offer);
-  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
-  const reviews = useAppSelector((state) => state.comments);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const property = useAppSelector(getOffer);
+  const nearbyOffers = useAppSelector(getNearbyOffers);
+  const reviews = useAppSelector(getComments);
 
   const nearbyOffersWithProperty = property ? [...nearbyOffers, property] : [...nearbyOffers];
 

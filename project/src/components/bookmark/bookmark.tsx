@@ -8,6 +8,7 @@ import { TPlaceCard } from '../../types/offers';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
 import { toggleOfferFavoriteStatusAction } from '../../store/api-actions';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 type TBookmarksProps = {
   isActive: boolean;
@@ -20,7 +21,7 @@ function Bookmark({isActive, onActiveChange, offer, sectionName}: TBookmarksProp
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const bookmarkClass = sectionName ? sectionName : 'place-card';
 

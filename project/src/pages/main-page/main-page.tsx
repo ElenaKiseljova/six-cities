@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import {Helmet} from 'react-helmet-async';
 
@@ -10,12 +11,13 @@ import useSelectedPlaceCard from '../../hooks/useSelectedPlaceCard';
 
 import withActiveFlag from '../../hocs/with-active-flag';
 
+import { getOffers } from '../../store/offers-process/selectors';
+
 import Header from '../../components/header/header';
 import CitiesList from '../../components/cities-list/cities-list';
 import PlaceCardList from '../../components/place-card-list/place-card-list';
 import Map from '../../components/map/map';
 import Sorting from '../../components/sorting/sorting';
-import { useState } from 'react';
 
 const getSortedOffersBy = (arr: TPlaceCard[], by: SORTING_VALUES): TPlaceCard[] => {
   switch (by) {
@@ -40,7 +42,7 @@ function MainPage(): JSX.Element {
 
   const [sortBy, setSortBy] = useState(SORTING_VALUES.POPULAR);
 
-  const offers = useAppSelector((state) => state.offers);
+  const offers = useAppSelector(getOffers);
 
   const offersInCity = cityName ? offers.filter((offer) => offer.city.name === cityName) : offers;
   const offersInCitySorting = getSortedOffersBy(offersInCity, sortBy);

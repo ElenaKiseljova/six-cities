@@ -7,6 +7,8 @@ import {useAppSelector, useAppDispatch} from '../../hooks/index';
 
 import { fetchFavoritesOffersAction } from '../../store/api-actions';
 
+import { getFavorites } from '../../store/user-process/selectors';
+
 import Header from '../../components/header/header';
 import PlaceCard from '../../components/place-card/place-card';
 
@@ -31,7 +33,7 @@ const getFavoritesSortedByCity = (favorites: TPlaceCard[]): TPlaceCardByCity => 
 function FavoritesPage(): JSX.Element {
   const dispatch = useAppDispatch();
 
-  const favoritesPlaceCards = useAppSelector((state) => state.favorites);
+  const favoritesPlaceCards = useAppSelector(getFavorites);
 
   const favoritesPlaceCardsByCity = getFavoritesSortedByCity(favoritesPlaceCards);
 

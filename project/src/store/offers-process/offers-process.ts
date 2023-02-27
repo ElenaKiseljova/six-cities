@@ -38,10 +38,10 @@ export const offersProcess = createSlice({
       .addCase(fetchOffersAction.pending, () => {
         serverProcess.actions.setDataLoadingStatus(true);
       })
-      .addCase(fetchOffersAction.fulfilled, (_state, action) => {
+      .addCase(fetchOffersAction.fulfilled, (state, action) => {
         serverProcess.actions.setDataLoadingStatus(false);
 
-        offersProcess.actions.setOffers(action.payload);
+        offersProcess.caseReducers.setOffers(state, action);
       });
   },
 });

@@ -5,12 +5,14 @@ import { AuthorizationStatus, AppRoute } from '../../const';
 
 import { useAppSelector } from '../../hooks';
 
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+
 import Header from '../../components/header/header';
 import LoginForm from '../../components/login-form/login-form';
 import RandomCity from '../../components/random-city/random-city';
 
 function LoginPage(): JSX.Element {
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   if (authorizationStatus === AuthorizationStatus.Auth) {
     return (

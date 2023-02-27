@@ -7,13 +7,14 @@ import { getUserData } from '../../services/user';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
 import {logoutAction} from '../../store/api-actions';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 function Header(): JSX.Element {
   const isLoginPage = useMatch(AppRoute.Login);
 
   const dispatch = useAppDispatch();
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const userEmail = getUserData('email');
   const userAvatar = getUserData('avatarUrl');
