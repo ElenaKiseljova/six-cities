@@ -7,27 +7,35 @@ import {AppRoute} from '../../const';
 
 import {useAppSelector} from '../../hooks';
 
+import { getAuthCheckedStatus } from '../../store/user-process/selectors';
+import { getDataLoadingStatus, getErrorStatus } from '../../store/data-process/selectors';
+
 import HistoryRouter from '../history-route/history-route';
-import LoadingPage from '../../pages/loading-page/loading-page';
 
 import PrivateRoute from '../private-route/private-route';
 
+import LoadingPage from '../../pages/loading-page/loading-page';
 import MainPage from '../../pages/main-page/main-page';
 import FvoritesPage from '../../pages/favorites-page/favorites-page';
 import LoginPage from '../../pages/login-page/login-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import NotFoundPage from '../../pages/not-found-page/not-found';
-import { getAuthCheckedStatus } from '../../store/user-process/selectors';
-import { getDataLoadingStatus } from '../../store/data-process/selectors';
+import ErrorPage from '../../pages/error-page/error-page';
 
 function App(): JSX.Element {
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
   const isOffersDataLoading = useAppSelector(getDataLoadingStatus);
+  const hasError = useAppSelector(getErrorStatus);
 
   if (!isAuthChecked || isOffersDataLoading) {
     return (
       <LoadingPage />
     );
+  }
+
+  if (hasError) {
+    return (
+      <ErrorPage />);
   }
 
   return (
