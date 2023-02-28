@@ -5,7 +5,7 @@ import { NameSpace } from '../const';
 import { favoritesProcess } from './favorites-process/favorites-process';
 import { offerProcess } from './offer-process/offer-process';
 import { offersProcess } from './offers-process/offers-process';
-import { serverProcess } from './server-process/server-process';
+import { dataProcess } from './data-process/data-process';
 import { userProcess } from './user-process/user-process';
 
 export const rootReducer = combineReducers({
@@ -13,5 +13,5 @@ export const rootReducer = combineReducers({
   [NameSpace.Offer]: offerProcess.reducer,
   [NameSpace.User]: userProcess.reducer,
   [NameSpace.Favorites]: favoritesProcess.reducer,
-  [NameSpace.Server]: serverProcess.reducer,
+  [NameSpace.Data]: dataProcess.reducer,
 });

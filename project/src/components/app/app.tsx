@@ -18,11 +18,11 @@ import LoginPage from '../../pages/login-page/login-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import NotFoundPage from '../../pages/not-found-page/not-found';
 import { getAuthCheckedStatus } from '../../store/user-process/selectors';
-import { getDataLoadingState } from '../../store/server-process/selectors';
+import { getDataLoadingStatus } from '../../store/data-process/selectors';
 
 function App(): JSX.Element {
   const isAuthChecked = useAppSelector(getAuthCheckedStatus);
-  const isOffersDataLoading = useAppSelector(getDataLoadingState);
+  const isOffersDataLoading = useAppSelector(getDataLoadingStatus);
 
   if (!isAuthChecked || isOffersDataLoading) {
     return (

@@ -25,6 +25,7 @@ export type OfferProcess = {
   comments: TReview[];
 };
 
-export type ServerProcess = {
+export type DataProcess = {
   isDataLoading: boolean;
+  hasError: boolean;
 };
