@@ -48,10 +48,12 @@ export const offerProcess = createSlice({
       .addCase(toggleOfferFavoriteStatusAction.fulfilled, (state, action) => {
         const { data, status } = action.payload;
 
-        state.offer = {
-          ...state.offer,
-          isFavorite: status === 1,
-        } as TPlaceCard;
+        if (state.offer?.id === action.payload.data.id) {
+          state.offer = {
+            ...state.offer,
+            isFavorite: status === 1,
+          };
+        }
 
         offerProcess.caseReducers.updateNearbyOffers(state, {
           type: action.type,
