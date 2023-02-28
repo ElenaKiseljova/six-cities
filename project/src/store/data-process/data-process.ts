@@ -40,10 +40,10 @@ export const dataProcess = createSlice({
       .addCase(fetchOfferAction.fulfilled, (state) => {
         state.isDataLoading = false;
       })
-      .addCase(fetchOfferAction.rejected, (state) => {
-        state.isDataLoading = false;
-        state.hasError = true;
-      })
+      // .addCase(fetchOfferAction.rejected, (state) => {
+      //   state.isDataLoading = false;
+      //   state.hasError = true;
+      // })
       .addCase(fetchNearbyOffersAction.pending, (state) => {
         state.isDataLoading = true;
         state.hasError = false;
@@ -51,20 +51,20 @@ export const dataProcess = createSlice({
       .addCase(fetchNearbyOffersAction.fulfilled, (state) => {
         state.isDataLoading = false;
       })
-      .addCase(fetchNearbyOffersAction.rejected, (state) => {
-        state.isDataLoading = false;
-        state.hasError = true;
-      })
+      // .addCase(fetchNearbyOffersAction.rejected, (state) => {
+      //   state.isDataLoading = false;
+      //   state.hasError = true;
+      // })
       .addCase(fetchCommentsAction.pending, (state) => {
         state.isDataLoading = true;
         state.hasError = false;
       })
       .addCase(fetchCommentsAction.fulfilled, (state) => {
         state.isDataLoading = false;
-      })
-      .addCase(fetchCommentsAction.rejected, (state) => {
-        state.isDataLoading = false;
-        state.hasError = true;
       });
+    // .addCase(fetchCommentsAction.rejected, (state) => {
+    //   state.isDataLoading = false;
+    //   state.hasError = true;
+    // });
   },
 });
