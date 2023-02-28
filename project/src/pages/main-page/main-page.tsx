@@ -51,6 +51,10 @@ function MainPage(): JSX.Element {
 
   const {selectedPlaceCard, onPlaceCardHoverHandler} = useSelectedPlaceCard(offersInCity);
 
+  if (typeof cityName === 'undefined') {
+    return <Navigate to={`${AppRoute.Root}Amsterdam`} replace />;
+  }
+
   // Проверка на несуществующий город
   const city = CITIES.find((c) => c.name === cityName);
   if (cityName && typeof city === 'undefined') {
