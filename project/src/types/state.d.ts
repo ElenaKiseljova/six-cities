@@ -9,6 +9,9 @@ export type AppDispatch = typeof store.dispatch;
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
+};
+
+export type FavoritesProcess = {
   favorites: TPlaceCard[];
 };
 

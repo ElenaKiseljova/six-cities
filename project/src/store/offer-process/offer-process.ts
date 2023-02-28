@@ -24,10 +24,10 @@ export const offerProcess = createSlice({
   initialState,
   reducers: {
     updateNearbyOffers: (state, action: PayloadAction<TPlaceCard>) => {
-      state.nearbyOffers = state.nearbyOffers.map((offer) =>
-        offer.id === action.payload.id
-          ? { ...offer, isFavorite: action.payload.isFavorite }
-          : offer
+      state.nearbyOffers = state.nearbyOffers.map((o) =>
+        o.id === action.payload.id
+          ? { ...o, isFavorite: action.payload.isFavorite }
+          : o
       );
     },
   },
@@ -46,9 +46,12 @@ export const offerProcess = createSlice({
         state.comments = action.payload;
       })
       .addCase(toggleOfferFavoriteStatusAction.fulfilled, (state, action) => {
-        const { data } = action.payload;
+        const { data, status } = action.payload;
 
-        state.offer = data;
+        state.offer = {
+          ...state.offer,
+          isFavorite: status === 1,
+        } as TPlaceCard;
 
         offerProcess.caseReducers.updateNearbyOffers(state, {
           type: action.type,
