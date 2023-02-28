@@ -1,7 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 import { NameSpace, AuthorizationStatus } from '../../const';
-import { TPlaceCard } from '../../types/offers';
 
 import { UserProcess } from '../../types/state';
 
@@ -10,9 +9,8 @@ import {
   fetchFavoritesOffersAction,
   loginAction,
   logoutAction,
+  toggleOfferFavoriteStatusAction,
 } from '../api-actions';
-
-import { offersProcess } from '../offers-process/offers-process';
 
 const initialState: UserProcess = {
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -22,19 +20,7 @@ const initialState: UserProcess = {
 export const userProcess = createSlice({
   name: NameSpace.User,
   initialState,
-  reducers: {
-    setFavorites: (state, action: PayloadAction<TPlaceCard[]>) => {
-      state.favorites = action.payload;
-    },
-    addToFavorites: (state, action: PayloadAction<TPlaceCard>) => {
-      state.favorites.push(action.payload);
-    },
-    removeFromFavorites: (state, action: PayloadAction<TPlaceCard>) => {
-      state.favorites = state.favorites.filter(
-        (offer) => offer.id !== action.payload.id
-      );
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(checkAuthAction.fulfilled, (state) => {
@@ -52,11 +38,20 @@ export const userProcess = createSlice({
       .addCase(logoutAction.fulfilled, (state) => {
         state.authorizationStatus = AuthorizationStatus.NoAuth;
         state.favorites = [];
-
-        offersProcess.actions.resetFavoritesOffersFlag();
       })
-      .addCase(fetchFavoritesOffersAction.fulfilled, (_state, action) => {
-        userProcess.actions.setFavorites(action.payload);
+      .addCase(fetchFavoritesOffersAction.fulfilled, (state, action) => {
+        state.favorites = action.payload;
+      })
+      .addCase(toggleOfferFavoriteStatusAction.fulfilled, (state, action) => {
+        const { data, status } = action.payload;
+
+        if (status === 1) {
+          state.favorites.push(data);
+        } else {
+          state.favorites = state.favorites.filter(
+            (offer) => offer.id !== data.id
+          );
+        }
       });
   },
 });
